@@ -1,6 +1,6 @@
 ---
-title: "Wink"
-description: "Instructions on how to set up the Wink hub within Home Assistant."
+title: Wink
+description: Instructions on how to set up the Wink hub within Home Assistant.
 logo: wink.png
 ha_category:
   - Hub
@@ -52,7 +52,9 @@ Wink requests three pieces of information from the user when they sign up for a 
 2. `Website:` The external address of your Home Assistant instance. If not externally accessible you can use your email address.
 3. `Redirect URI:` This should be `http://192.168.1.5:8123/auth/wink/callback` replacing the IP with the internal IP of your Home Assistant box.
 
-No settings are required in the `configuration.yaml` other than `wink:` this is because you will be guided through setup via the configurator on the frontend.
+No settings are required in the `configuration.yaml` other than `wink:`. 
+
+After adding `wink:` to your `configuration.yaml` and restarting Home Assistant you will see a persistent notification on the frontend with a `CONFIGURE` button that will guide you through the setup via the frontend configurator.
 
 <div class='note'>
 When using the configurator make sure the initial setup is performed on the same local network as the Home Assistant server, if not from the same box Home Assistant is running on. This will allow for authentication redirects to happen correctly.
@@ -499,9 +501,9 @@ The requirement is that you have setup [Wink](/integrations/wink/) from above.
 The following services have only been confirmed on Schlage locks.
 </div>
 
-### Service `wink_set_lock_alarm_mode`
+### Service `set_lock_alarm_mode`
 
-You can use the service wink/wink_set_lock_alarm_mode to set the alarm mode of your lock.
+You can use the service wink/set_lock_alarm_mode to set the alarm mode of your lock.
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |
@@ -514,14 +516,14 @@ Example:
 script:
   set_locks_to_tamper:
     sequence:
-      - service: wink.wink_set_lock_alarm_mode
+      - service: wink.set_lock_alarm_mode
         data:
           mode: "tamper"
 ```
 
-### Service `wink_set_lock_alarm_sensitivity`
+### Service `set_lock_alarm_sensitivity`
 
-You can use the service wink/wink_set_lock_alarm_sensitivity to set the alarm sensitivity of your lock.
+You can use the service wink/set_lock_alarm_sensitivity to set the alarm sensitivity of your lock.
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |
@@ -534,14 +536,14 @@ Example:
 script:
   set_locks_to_high_sensitivity:
     sequence:
-      - service: wink.wink_set_lock_alarm_sensitivity
+      - service: wink.set_lock_alarm_sensitivity
         data:
           sensitivity: "high"
 ```
 
-### Service `wink_set_lock_alarm_state`
+### Service `set_lock_alarm_state`
 
-You can use the service wink/wink_set_lock_alarm_state to set the alarm state of your lock.
+You can use the service wink/set_lock_alarm_state to set the alarm state of your lock.
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |
@@ -554,14 +556,14 @@ Example:
 script:
   disable_all_locks_alarm:
     sequence:
-      - service: wink.wink_set_lock_alarm_state
+      - service: wink.set_lock_alarm_state
         data:
           enabled: false
 ```
 
-### Service `wink_set_lock_beeper_state`
+### Service `set_lock_beeper_state`
 
-You can use the service wink/wink_set_lock_beeper_state to set the beeper state of your lock.
+You can use the service wink/set_lock_beeper_state to set the beeper state of your lock.
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |
@@ -574,14 +576,14 @@ Example:
 script:
   disable_all_locks_beepers:
     sequence:
-      - service: wink.wink_set_lock_beeper_state
+      - service: wink.set_lock_beeper_state
         data:
           enabled: false
 ```
 
-### Service `wink_set_lock_vacation_mode`
+### Service `set_lock_vacation_mode`
 
-You can use the service wink/wink_set_lock_vacation_mode to set the vacation mode of your lock.
+You can use the service wink/set_lock_vacation_mode to set the vacation mode of your lock.
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |
@@ -594,14 +596,14 @@ Example:
 script:
   enabled_vacation_mode_on_all_locks:
     sequence:
-      - service: wink.wink_set_lock_vacation_mode
+      - service: wink.set_lock_vacation_mode
         data:
           enabled: false
 ```
 
-### Service `wink_add_new_lock_key_code`
+### Service `add_new_lock_key_code`
 
-You can use the service wink/wink_add_new_lock_key_code to add a new user code to your Wink lock.
+You can use the service wink/add_new_lock_key_code to add a new user code to your Wink lock.
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |

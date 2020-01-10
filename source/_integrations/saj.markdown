@@ -1,11 +1,13 @@
 ---
-title: "SAJ Solar Inverter"
-description: "Instructions on how to connect your SAJ Solar Inverter to Home Assistant."
+title: SAJ Solar Inverter
+description: Instructions on how to connect your SAJ Solar Inverter to Home Assistant.
 ha_category:
   - Energy
 logo: saj.png
 ha_iot_class: Local Polling
-ha_release: "0.100"
+ha_release: '0.100'
+ha_codeowners:
+  - '@fredericvl'
 ---
 
 The `saj` sensor will poll a [SAJ](https://www.saj-electric.com/) solar inverter and present the values as sensors in Home Assistant.
@@ -30,6 +32,10 @@ sensor:
 host:
   description: "The IP address of the SAJ Solar Inverter."
   required: true
+  type: string
+name:
+  description: "An optional name for your SAJ Solar Inverter."
+  required: false
   type: string
 type:
   description: "Type of connection module: 'ethernet' or 'wifi'"
@@ -57,7 +63,7 @@ Sensors available in the library:
 | today_time         | h    | Inverter's running time for today.                                           |
 | today_max_current  | W    | Maximum current power for today. (only for connection via ethernet module)   |
 | total_yield        | kWh  | Total kWh generated to date.                                                 |
-| total_time         | h    | Total running time of the inverter .                                         |
+| total_time         | h    | Total running time of the inverter.                                          |
 | total_co2_reduced  | kg   | Total CO2 in kg reduced.                                                     |
 | temperature        | °C   | Temperature of the inverter.                                                 |
 | state              | N/A  | Live state of the inverter.                                                  |
@@ -67,6 +73,7 @@ Sensors available in the library:
 ```yaml
 sensor:
   - platform: saj
+    name: MY_INVERTER_NAME
     host: IP_ADDRESS_OF_DEVICE
     type: wifi
     username: USERNAME

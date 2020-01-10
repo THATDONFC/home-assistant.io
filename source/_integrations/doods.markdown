@@ -1,10 +1,10 @@
 ---
-title: "DOODS"
-description: "Detect and recognize objects with DOODS."
+title: DOODS - Distributed Outside Object Detection Service
+description: Detect and recognize objects with DOODS.
 ha_category:
   - Image Processing
 ha_iot_class: Local Polling
-ha_release: "0.100"
+ha_release: '0.100'
 ---
 
 The `doods` image processing platform allows you to detect and recognize objects in a camera image using [DOODS](https://github.com/snowzach/doods/). The state of the entity is the number of objects detected, and recognized objects are listed in the `summary` attribute along with quantity. The `matches` attribute provides the confidence `score` for recognition and the bounding `box` of the object for each detection category.
@@ -176,7 +176,7 @@ image_processing:
       - truck
 ```
 
-## Optimising resources
+## Optimizing resources
 
 [Image processing components](/components/image_processing/) process the image from a camera at a fixed period given by the `scan_interval`. This leads to excessive processing if the image on the camera hasn't changed, as the default `scan_interval` is 10 seconds. You can override this by adding to your config `scan_interval: 10000` (setting the interval to 10,000 seconds), and then call the `image_processing.scan` service when you actually want to perform processing.
 
@@ -199,5 +199,5 @@ image_processing:
          - binary_sensor.driveway
   action:
     - service: image_processing.scan
-      entity_id: camera.driveway
+      entity_id: image_processing.doods_camera_driveway
 ```

@@ -1,6 +1,6 @@
 ---
-title: "Yamaha Network Receivers"
-description: "Instructions on how to integrate Yamaha Network Receivers into Home Assistant."
+title: Yamaha Network Receivers
+description: Instructions on how to integrate Yamaha Network Receivers into Home Assistant.
 logo: yamaha.png
 ha_category:
   - Media Player
@@ -127,7 +127,7 @@ script:
 
 ```
 
-### Service `yamaha_enable_output`
+### Service `enable_output`
 
 Enable or disable an output port (HDMI) on the receiver.
 

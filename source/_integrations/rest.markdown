@@ -1,6 +1,6 @@
 ---
-title: "RESTful Sensor"
-description: "Instructions on how to integrate REST sensors into Home Assistant."
+title: RESTful
+description: Instructions on how to integrate REST sensors into Home Assistant.
 logo: restful.png
 ha_category:
   - Sensor
@@ -131,6 +131,8 @@ Use either `resource` or `resource_template`.
 $ curl -X GET http://192.168.1.31/temperature/
 {"temperature": 77, "id": "sensor02", "name": "livingroom", "connected": true}
 ```
+
+The response is expected to be a dictionary or a list with a dictionary as its 0th element.
 
 ## Examples
 

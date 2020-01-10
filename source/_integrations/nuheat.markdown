@@ -1,6 +1,6 @@
 ---
-title: "NuHeat"
-description: "Instructions on how to integrate your NuHeat Signature thermostats within Home Assistant."
+title: NuHeat
+description: Instructions on how to integrate your NuHeat Signature thermostats within Home Assistant.
 logo: nuheat.png
 ha_category:
   - Climate
@@ -159,7 +159,7 @@ Sets the thermostat's preset mode. Without a preset mode set it run the thermost
 | `entity_id` | yes | String or list of strings that point at `entity_id`'s of climate devices to control. Else targets all.
 | `hold_mode` | no | New value of hold mode.
 
-### Service `resume_program`
+### Service `nuheat.resume_program`
 
 Resumes the currently active schedule.
 

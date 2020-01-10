@@ -1,21 +1,18 @@
 ---
-title: "OpenWRT (luci)"
-description: "Instructions on how to integrate OpenWRT routers into Home Assistant."
+title: OpenWRT (luci)
+description: Instructions on how to integrate OpenWRT routers into Home Assistant.
 logo: openwrt.png
 ha_category:
   - Presence Detection
 ha_release: pre 0.7
+ha_codeowners:
+  - '@fbradyirl'
+  - '@mzdrale'
 ---
 
 _This is one of multiple ways we support OpenWRT. For an overview, see [openwrt](/integrations/openwrt/)._
 
 This is a presence detection scanner for OpenWRT using [luci](https://openwrt.org/docs/techref/luci).
-
-<div class='note'>
-
-This integration requires a [workaround](https://github.com/home-assistant/home-assistant/issues/1258#issuecomment-252469880) when using luci with HTTPS and a self-signed certificate.
-
-</div>
 
 Before this scanner can be used you have to install the luci RPC package on OpenWRT:
 
