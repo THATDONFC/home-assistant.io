@@ -10,6 +10,9 @@ ha_category:
   - Vacuum
 ha_iot_class: Cloud Polling
 ha_release: 0.47
+ha_codeowners:
+  - '@etheralm'
+ha_domain: dyson
 ---
 
 The `dyson` integration is the main integration to integrate all [Dyson](https://www.dyson.com) related platforms.
@@ -169,3 +172,4 @@ Note: currently only the 2018 dyson fans are supported(TP04 and DP04).
 - Pure Cool link (desk and tower)
 - Pure Hot+cool link (see climate part) for thermal control
 - Pure Cool 2018 Models (TP04 and DP04)
+- Pure Cool Cryptomic (TP06)

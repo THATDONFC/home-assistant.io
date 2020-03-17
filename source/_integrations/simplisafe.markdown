@@ -9,6 +9,7 @@ ha_category:
 ha_config_flow: true
 ha_codeowners:
   - '@bachya'
+ha_domain: simplisafe
 ---
 
 The `simplisafe` integration integrates [SimpliSafe home security](https://simplisafe.com) (V2 and V3) systems into Home Assistant. Multiple SimpliSafe accounts can be accommodated.
@@ -55,56 +56,92 @@ entity.
 
 Remove a SimpliSafe PIN (by label or PIN value).
 
-| Service Data Attribute    | Optional | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| `system_id`                 |      no  | The ID of a SimpliSafe system               | 
-| `label_or_pin`              |      no  | The PIN label or value to remove            |
-
-### `simplisafe.set_alarm_duration`
-
-Set the duration (in seconds) of an active alarm.
-
-| Service Data Attribute    | Optional | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| `system_id`                 |      no  | The ID of a SimpliSafe system               | 
-| `duaration`                 |      no  | The number of seconds to sound the alarm    |
-
-### `simplisafe.set_delay`
-
-Set a duration for how long the base station should delay when transitioning between states.
-
-| Service Data Attribute    | Optional | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| `system_id`                 |      no  | The ID of a SimpliSafe system               | 
-| `arrival_state`             |      no  | The target "arrival" state (away, home)     | 
-| `transition`                |      no  | The system state transition to affect (entry, exit)               | 
-| `seconds`                   |      no  | The number of seconds to delay              |
-
-### `simplisafe.set_light`
-
-Turn the base station light on/off.
-
-| Service Data Attribute    | Optional | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| `system_id`                 |      no  | The ID of a SimpliSafe system               | 
-| `light_state`               |      no  | True for on, False for off                  |
+| Service Data Attribute | Optional | Description                      |
+| ---------------------- | -------- | -------------------------------- |
+| `system_id`            | no       | The ID of a SimpliSafe system    |
+| `label_or_pin`         | no       | The PIN label or value to remove |
 
 ### `simplisafe.set_pin`
 
 Set a SimpliSafe PIN.
 
-| Service Data Attribute    | Optional | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| `system_id`                 |      no  | The ID of the system to remove the PIN from |
-| `label`                     |      no  | The label to show in the SimpliSafe UI      |
-| `pin`                       |      no  | The PIN value to use                        |
+| Service Data Attribute | Optional | Description                                 |
+| ---------------------- | -------- | ------------------------------------------- |
+| `system_id`            | no       | The ID of the system to remove the PIN from |
+| `label`                | no       | The label to show in the SimpliSafe UI      |
+| `pin`                  | no       | The PIN value to use                        |
 
-### `simplisafe.set_volume_property`
+### `simplisafe.system_properties`
 
-Set a level for one of the base station's various volumes.
+Set one or more system properties.
 
-| Service Data Attribute    | Optional | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| `system_id`                 |      no  | The ID of a SimpliSafe system               | 
-| `volume_property`           |      no  | The volume property to set (alarm, chime, voice_prompt)               | 
-| `volume`                    |      no  | A volume (off, low, medium, high)           |
+For any property denoting a volume, the following values should be used:
+
+* Off: `0`
+* Low: `1`
+* Medium: `2`
+* High: `3`
+
+| Service Data Attribute | Optional | Description                                                                  |
+| ---------------------- | -------- | ---------------------------------------------------------------------------- |
+| `system_id`            | no       | The ID of a SimpliSafe system                                                |
+| `alarm_duration`       | yes      | The number of seconds a triggered alarm should sound                         |
+| `chime_volume`         | yes      | The volume of the door chime                                                 |
+| `entry_delay_away`     | yes      | The number of seconds to delay triggering when entering with an "away" state |
+| `entry_delay_home`     | yes      | The number of seconds to delay triggering when entering with a "home" state  |
+| `exit_delay_away`      | yes      | The number of seconds to delay triggering when exiting with an "away" state  |
+| `exit_delay_home`      | yes      | The number of seconds to delay triggering when exiting with a "home" state   |
+| `light`                | yes      | Whether the light on the base station should display when armed              |
+| `voice_prompt_volume`  | yes      | The volume of the base station's voice prompts                               |
+
+## Events
+
+### `SIMPLISAFE_EVENT`
+
+`SIMPLISAFE_EVENT` events represent events that appear on the timeline of the SimpliSafe
+web and mobile apps. When received, they come with event data that contains the
+following keys:
+
+* `changed_by`: the PIN that triggered the event (if appropriate)
+* `event_type`: the type of event
+* `info`: a human-friendly string describing the event in more detail
+* `sensor_name`: the sensor that triggered the event (if appropriate)
+* `sensor_serial`: the serial number of the sensor that triggered the event (if appropriate)
+* `sensor_type`: the type of sensor that triggered the event (if appropriate)
+* `system_id`: the system ID to which the event belongs
+* `timestamp`: the UTC datetime at which the event was received
+
+For example, when the system is armed by "remote" means (via the web app, etc.), a
+`SIMPLISAFE_EVENT` event will fire with the following event data:
+
+```python
+{
+    "changed_by": "",
+    "event_type": "armed_home",
+    "info": "System Armed (Home) by Remote Management",
+    "sensor_name": "",
+    "sensor_serial": "",
+    "sensor_type": "remote",
+    "system_id": 123456,
+    "timestamp": datetime.datetime(2020, 2, 13, 23, 1, 13, tzinfo=<UTC>),
+}
+```
+
+`event_type`, being one of the key fields automations might be built from, can have the
+following values:
+
+* `camera_motion_detected`
+* `doorbell_detected`
+* `entry_detected`
+* `motion_detected`
+
+### `SIMPLISAFE_NOTIFICATION`
+
+`SIMPLISAFE_NOTIFICATION` events represent system notifications that would appear in the
+messages section of the SimpliSafe web and mobile apps. When received, they come with
+event data that contains the following keys:
+
+* `category`: The notification category (e.g., `error`)
+* `code`: The SimpliSafe code for the notification
+* `message`: The actual text of the notification
+* `timestamp`: The UTC timestamp of the notification

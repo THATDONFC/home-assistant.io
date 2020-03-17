@@ -5,6 +5,7 @@ logo: alarmdotcom.png
 ha_category:
   - Alarm
 ha_release: 0.11
+ha_domain: alarmdotcom
 ---
 
 The `alarmdotcom` platform is consuming the information provided by [Alarm.com](https://www.alarm.com/).
@@ -40,3 +41,7 @@ code:
   required: false
   type: integer
 {% endconfiguration %}
+
+<div class='note warning'>
+  Please make sure that your alarm.com language is set to English before open any issue.
+</div>

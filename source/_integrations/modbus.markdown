@@ -1,13 +1,13 @@
 ---
 title: Modbus
 description: Instructions on how to integrate Modbus within Home Assistant.
-logo: modbus.png
 ha_category:
   - Hub
 ha_release: pre 0.7
 ha_iot_class: Local Push
 ha_codeowners:
   - '@adamchengtkc'
+ha_domain: modbus
 ---
 
 [Modbus](http://www.modbus.org/) is a serial communication protocol to control PLCs (Programmable logic controller).
@@ -150,5 +150,6 @@ modbus:
 ## Building on top of Modbus
 
  - [Modbus Binary Sensor](/integrations/binary_sensor.modbus/)
+ - [Modbus Climate](/integrations/climate.modbus/)
  - [Modbus Sensor](/integrations/sensor.modbus/)
  - [Modbus Switch](/integrations/switch.modbus/)

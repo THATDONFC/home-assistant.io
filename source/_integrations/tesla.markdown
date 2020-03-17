@@ -1,7 +1,6 @@
 ---
 title: Tesla
 description: Instructions on how to integrate Tesla car into Home Assistant.
-logo: tesla.png
 ha_category:
   - Car
   - Binary Sensor
@@ -15,6 +14,8 @@ ha_iot_class: Cloud Polling
 ha_config_flow: true
 ha_codeowners:
   - '@zabuldon'
+  - '@alandtse'
+ha_domain: tesla
 ---
 
 The `Tesla` integration offers integration with the [Tesla](https://auth.tesla.com/login) cloud service and provides presence detection as well as sensors such as charger state and temperature.
@@ -53,8 +54,8 @@ password:
   required: true
   type: string
 scan_interval:
-  description: API polling interval in seconds. Minimum value can't be less than 300 (5 minutes). Very frequent polling can use battery.
+  description: API polling interval in seconds. Minimum value can't be less than 60 (1 minute). Very frequent polling can use battery.
   required: false
   type: integer
-  default: 300
+  default: 660
 {% endconfiguration %}
