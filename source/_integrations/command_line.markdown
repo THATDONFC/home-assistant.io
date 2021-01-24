@@ -1,11 +1,12 @@
 ---
-title: "Command line Binary Sensor"
-description: "Instructions on how to integrate Command binary sensors within Home Assistant."
-logo: command_line.png
+title: Command Line
+description: Instructions on how to integrate Command binary sensors within Home Assistant.
 ha_category:
   - Utility
+  - Binary Sensor
 ha_release: 0.12
 ha_iot_class: Local Polling
+ha_domain: command_line
 ---
 
 The `command_line` binary sensor platform issues specific commands to get data.
@@ -88,7 +89,7 @@ binary_sensor:
 
 ### Check RasPlex
 
-Check if [RasPlex](https://www.rasplex.com/) is `online`.
+Check if [RasPlex](https://github.com/RasPlex/RasPlex) is `online`.
 
 ```yaml
 binary_sensor:
@@ -135,3 +136,13 @@ binary_sensor:
     payload_on: 'active'
     payload_off: 'inactive'
 ```
+
+## Services
+
+Available services: `reload`.
+
+### Service `command_line.reload`
+
+Reload all `command_line` entities.
+
+This service takes no service data attributes.

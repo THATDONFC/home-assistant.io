@@ -1,11 +1,12 @@
 ---
-title: "Alert"
-description: "Instructions on how to setup automatic alerts within Home Assistant."
-logo: home-assistant.png
+title: Alert
+description: Instructions on how to setup automatic alerts within Home Assistant.
 ha_category:
   - Automation
 ha_release: 0.38
-ha_qa_scale: internal
+ha_iot_class: Local Push
+ha_quality_scale: internal
+ha_domain: alert
 ---
 
 The `alert` integration is designed to notify you when problematic issues arise.
@@ -14,8 +15,15 @@ remind you of this by sending you repeating notifications at customizable
 intervals. This is also used for low battery sensors,
 water leak sensors, or any condition that may need your attention.
 
-Alerts will add an entity to the front end only when they are firing.
-This entity allows you to silence an alert until it is resolved.
+Alerts will add an entity to the front end.
+This entity allows you to silence an alert until it is resolved and has three
+possible states:
+
+State | Description
+-|-
+`idle` | The condition for the alert is false.
+`on` | The condition for the alert is true.
+`off` | The condition for the alert is true but it was acknowledged.
 
 ### Basic Example
 
@@ -51,7 +59,7 @@ entity_id:
 title:
   description: >
     A title to be used for the notification if the notifier supports it
-    with [template][template] support.
+    with [template](/docs/configuration/templating/) support.
   required: false
   type: template
 state:
@@ -79,15 +87,15 @@ skip_first:
   default: false
 message:
   description: >
-    A message to be sent after an alert transitions from `off` to `on`
-    with [template][template] support.
+    A message to be sent after an alert transitions from `idle` to `on`
+    with [template](/docs/configuration/templating/) support.
   required: false
   type: template
 done_message:
   description: >
-    A message sent after an alert transitions from `on` to `off` with 
-    [template][template] support. Is only sent if an alert notification 
-    was sent for transitioning from `off` to `on`.
+    A message sent after an alert transitions from `on` or `off` to `idle` with
+    [template](/docs/configuration/templating/) support. Is only sent if an alert notification
+    was sent for transitioning from `idle` to `on`.
   required: false
   type: template
 notifiers:
@@ -148,6 +156,7 @@ than one input. For all of these situations, it is best to use the alert in
 conjunction with a `Template Binary Sensor`. The following example does that.
 
 {% raw %}
+
 ```yaml
 binary_sensor:
   - platform: template
@@ -165,6 +174,7 @@ alert:
       - ryans_phone
       - kristens_phone
 ```
+
 {% endraw %}
 
 This example will begin firing as soon as the entity `sensor.motion`'s `battery`
@@ -205,12 +215,13 @@ sent at 2:15, 2:45, 3:45, 4:45, etc., continuing every 60 minutes.
 ### Message Templates
 
 It may be desirable to have the alert notifications include information
-about the state of the entity. [Templates](/docs/configuration/templating/)
+about the state of the entity. [Templates][template]
 can be used in the message or name of the alert to make it more relevant.
 The following will show for a plant how to include the problem `attribute`
 of the entity.
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml entry
 alert:
@@ -227,6 +238,7 @@ alert:
       - ryans_phone
       - kristens_phone
 ```
+
 {% endraw %}
 
 The resulting message could be `Plant Officeplant needs help (moisture low)`.
@@ -247,8 +259,8 @@ alert:
       - 15
       - 30
       - 60
-    can_acknowledge: True  # Optional, default is True
-    skip_first: True  # Optional, false is the default
+    can_acknowledge: true  # Optional, default is true
+    skip_first: true  # Optional, false is the default
     data:
       inline_keyboard:
         - 'Close garage:/close_garage, Acknowledge:/garage_acknowledge'

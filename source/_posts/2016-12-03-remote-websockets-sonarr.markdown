@@ -13,7 +13,7 @@ Here we go... 0.34. Let's call it the "Santa Claus" release. Rudolph was faster 
 
 ### GPSLogger
 
-The work of [@dainok] let's you use your Android device, with the Geolocation feature enabled, to track itself using GPS or WiFi networks with the [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger) app. GPSLogger can use multiple sources: the passive one just get the latest Android known location, without activating GPS sensors or scanning for WiFi networks.
+The work of [@dainok] let's you use your Android device, with the Geolocation feature enabled, to track itself using GPS or WiFi networks with the [GPSLogger](https://github.com/mendhak/gpslogger/releases) app. GPSLogger can use multiple sources: the passive one just get the latest Android known location, without activating GPS sensors or scanning for WiFi networks.
 
 ###  Remote component
 
@@ -36,14 +36,14 @@ The support for multiple hosts is a result of allowing mixed configurations with
 
 This release includes a new [websockets][websockets] based API by [@balloob] to power the next generation of Home Assistant frontends. The current frontend has been partly migrated to use it and will be further migrated in the future.
 
-## All changes 
+## All changes
 
 - New services and improved device support for [HomeMatic][homematic] ([@pvizeli], [@danielperna84])
 - Device tracker: New support for [GPSLogger][gpslogger] ([@dainok])
 - Sensor: Support for [Sonarr][sonarr] ([@hborawski])
 - Sensor: [World Air Quality Index][waqi] sensor ([@valentinalexeev], [@fabaff])
 - Sensor: Support for [Dutch Smart Meter Requirements][dsmr] ([@aequitas])
-- Switch: [Hook][hook] support by hooksmarthome.com ([@dasos])
+- Switch: Hook support by hooksmarthome.com ([@dasos])
 - Camera: Integration for [Nest cameras][nest-cam] ([@technicalpickles])
 - Light: Support for light effects ([@Diaoul])
 - Sensor: New [Threshold][threshold] sensor ([@fabaff])
@@ -212,10 +212,9 @@ Experiencing issues introduced by this release? Please report them in our [issue
 [gpslogger]: /integrations/gpslogger
 [harmony]: /integrations/harmony
 [homematic]: /integrations/homematic/
-[hook]: /integrations/hook
 [nest-cam]: /integrations/nest#camera
 [nest]: /integrations/nest/
-[nginx]: /ecosystem/nginx/
+[nginx]: /docs/ecosystem/nginx
 [nut]: /integrations/nut
 [philips]: /integrations/philips_js
 [remote]: /integrations/remote/
@@ -226,4 +225,3 @@ Experiencing issues introduced by this release? Please report them in our [issue
 [threshold]: /integrations/threshold
 [websockets]: /developers/websocket_api/
 [waqi]: /integrations/waqi
-

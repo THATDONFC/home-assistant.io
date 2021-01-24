@@ -1,18 +1,21 @@
 ---
-title: "DSMR or Slimme meter"
-description: "Instructions on how to integrate DSMR Smartmeter within Home Assistant."
+title: DSMR Slimme Meter
+description: Instructions on how to integrate DSMR Smartmeter within Home Assistant.
 logo: netbeheernederland.jpg
 ha_category:
   - Energy
 ha_release: 0.34
 ha_iot_class: Local Push
+ha_domain: dsmr
+ha_codeowners:
+  - '@Robbie1221'
 ---
 
 A sensor platform for Dutch Smart Meters which comply to DSMR (Dutch Smart Meter Requirements), also known as 'Slimme meter' or 'P1 poort'.
 
-- Currently support DSMR V2.2, V3, V4 and V5 through the [dsmr_parser](https://github.com/ndokter/dsmr_parser) module by Nigel Dokter.
+- Currently support DSMR V2.2, V3, V4, V5, V5 Belgian and V5 Smarty through the [dsmr_parser](https://github.com/ndokter/dsmr_parser) module by Nigel Dokter.
 - For official information about DSMR refer to: [DSMR Document](https://www.netbeheernederland.nl/dossiers/slimme-meter-15)
-- For official information about the P1 port refer to: <https://www.wijhebbenzon.nl/media/kunena/attachments/3055/DSMRv5.0FinalP1.pdf>
+- For official information about the P1 port refer to: [P1 Companion Standard](https://www.netbeheernederland.nl/_upload/Files/Slimme_meter_15_a727fce1f1.pdf)
 - For unofficial hardware connection examples refer to: [Domoticx](http://domoticx.com/p1-poort-slimme-meter-hardware/)
 
 <p class='img'>
@@ -32,13 +35,13 @@ This integration is known to work for:
 USB serial converters:
 
 - Cheap (Banggood/ebay) Generic PL2303
-- <https://sites.google.com/site/nta8130p1smartmeter/webshop>
-- <https://www.sossolutions.nl/slimme-meter-kabel>
-- <https://tweakers.net/gallery/269738/aanbod/>
+- [Smartmeter Webshop](https://sites.google.com/site/nta8130p1smartmeter/webshop)
+- [SOS Solutions](https://www.sossolutions.nl/slimme-meter-kabel)
+- [AliExpress](https://nl.aliexpress.com/item/32945187155.html)
 
 Serial to network proxies:
 
-- ser2net - <http://ser2net.sourceforge.net/>
+- [ser2net](http://ser2net.sourceforge.net)
 
 DIY solutions (ESP8266 based):
 
@@ -52,17 +55,24 @@ sensor:
 
 {% configuration %}
   port:
-    description: "Serial port to which Smartmeter is connected (default: /dev/ttyUSB0 (connected to USB port)). For remote (i.e. ser2net) connections, use TCP port number to connect to (i.e. 2001)."
+    description: "Serial port to which Smartmeter is connected via USB. For remote (i.e., ser2net) connections, use TCP port number to connect to (i.e., 2001)."
     required: false
     type: string
+    default: "/dev/ttyUSB0"
   host:
-    description: "Host to which Smartmeter is connected (default: '' (connected via serial or USB, see **port**)). For remote connections, use IP address of host to connect to (i.e. 192.168.1.13)."
+    description: "Host to which Smartmeter is connected via serial or USB, see **port**. For remote connections, use IP address of host to connect to (i.e., 192.168.1.13)."
     required: false
     type: string
   dsmr_version:
-    description: "Version of DSMR used by meter. Choices: 2.2, 4, 5. Defaults to 2.2."
+    description: "Version of DSMR used by meter. Choices: `2.2`, `4`, `5`, `5B` (For Belgian Meter), `5L` (For Smarty Meter)."
     required: false
     type: string
+    default: "2.2"
+  reconnect_interval:
+    description: The reconnect interval in seconds when the connection is lost with the Smartmeter.
+    required: false
+    type: integer
+    default: 30
   precision:
     description: Defines the precision of the calculated values, through the argument of round().
     required: false
@@ -83,15 +93,15 @@ group:
   meter_readings:
     name: Meter readings
     entities:
-      - sensor.power_consumption_low
-      - sensor.power_consumption_normal
-      - sensor.power_production_low
-      - sensor.power_production_normal
+      - sensor.energy_consumption_tarif_1
+      - sensor.energy_consumption_tarif_2
+      - sensor.energy_production_tarif_1
+      - sensor.energy_production_tarif_2
       - sensor.gas_consumption
 ```
 
 ```yaml
-# Example configuration.yaml entry for remote (TCP/IP, i.e. via ser2net) connection to host which is connected to Smartmeter
+# Example configuration.yaml entry for remote (TCP/IP, i.e., via ser2net) connection to host which is connected to Smartmeter
 sensor:
   - platform: dsmr
     host: 192.168.1.13
@@ -102,10 +112,10 @@ group:
   meter_readings:
     name: Meter readings
     entities:
-      - sensor.power_consumption_low
-      - sensor.power_consumption_normal
-      - sensor.power_production_low
-      - sensor.power_production_normal
+      - sensor.energy_consumption_tarif_1
+      - sensor.energy_consumption_tarif_2
+      - sensor.energy_production_tarif_1
+      - sensor.energy_production_tarif_2
       - sensor.gas_consumption
 ```
 
@@ -121,23 +131,23 @@ or
 2001:raw:600:/dev/ttyUSB0:9600 EVEN 1STOPBIT 7DATABITS XONXOFF LOCAL -RTSCTS
 ```
 
-[HASSbian](/docs/installation/hassbian/installation/) users have to give dialout permission to the user `homeassistant`:
-
-```bash
-$ sudo usermod -a -G dialout homeassistant
-```
-
-and after that you need to reboot!
-
-```bash
-$ sudo reboot
-```
-
 Docker users have to allow Docker access to the device by adding `--device /dev/ttyUSB21:/dev/ttyUSB21` to the run command:
 
 ```hass
 $ docker run --device /dev/ttyUSB0:/dev/ttyUSB0 -d --name="home-assistant" -v /home/USERNAME/hass:/config -v /etc/localtime:/etc/localtime:ro --net=host homeassistant/home-assistant
 ```
+
+### Options
+
+To configure options for DSMR integration go to **Configuration** >> **Integrations** and press **Options** on the DSMR card.
+
+#### Time between updates
+
+Typically the smart meter sends new data every 5-10 seconds. This value defines the minimum time between entity updates in seconds. Setting this value to 0 will update entities each time data is received from the smart meter.
+
+<div class='note warning'>
+Reducing the default time between updates will increase the amount of events generated and can potentially flood the system with events.
+</div>
 
 ### Technical overview
 

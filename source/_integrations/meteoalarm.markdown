@@ -1,10 +1,13 @@
 ---
-title: MeteoAlarm Sensor
-description: "Instructions on how to set up MeteoAlarm binary sensors within Home Assistant."
+title: MeteoAlarm
+description: Instructions on how to set up MeteoAlarm binary sensors within Home Assistant.
 logo: meteoalarm.png
 ha_category: Binary Sensor
 ha_release: 0.93
 ha_iot_class: Local Polling
+ha_codeowners:
+  - '@rolfberkenbosch'
+ha_domain: meteoalarm
 ---
 
 The `MeteoAlarm` platform allows one to watch for weather alerts in europe from [MeteoAlarm](https://www.meteoalarm.eu) (EUMETNET). To use this binary sensor, you need the two digits of your country and the province name from  [MeteoAlarm](https://www.meteoalarm.eu). Please note that you need to write the exact details from the website with capitals.
@@ -37,7 +40,7 @@ province:
   required: true
   type: string
 language:
-  description: "The 2 letters of your language, please be aware that this is only possible in the current country. So 'ne' is only possible in Netherlands. Possible options are: bu, bs, ce, da, de, ee, en, es, ga, ca, su, fr, gr, he, hr, ma, is, it, li, la, sr, mk, ma, ne, no, po, ro, cp, sv, sl, eu."
+  description: "The 2 letters of your language, please be aware that this is only possible in the current country. So 'ne' is only possible in Netherlands. Possible options are: bu, bs, ce, da, de, ee, en, es, ga, ca, su, fr, gr, he, hr, ma, is, it, li, la, sr, mk, ma, ne, no, po, pt, ro, cp, sv, sl, eu."
   required: false
   type: string
   default: 'en'
@@ -83,6 +86,7 @@ Example automation
 Below you find an example of an automation.
 
 {% raw %}
+
 ```yaml
 automation:
   - alias: Alert me about weather warnings
@@ -92,10 +96,11 @@ automation:
       from: ‘off’
     action:
       - service: notify.notify
-        data_template:
+        data:
           title: "{{state_attr('binary_sensor.meteoalarm', 'headline')}}"
           message: "{{state_attr('binary_sensor.meteoalarm', 'description')}} is effective on {{state_attr('binary_sensor.meteoalarm', 'effective')}}"
 ```
+
 {% endraw %}
 
 <div class='note warning'>

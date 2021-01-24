@@ -1,10 +1,11 @@
 ---
-title: "Microsoft Face"
-description: "Instructions on how to integrate Microsoft Face integration into Home Assistant."
-logo: microsoft.png
+title: Microsoft Face
+description: Instructions on how to integrate Microsoft Face integration into Home Assistant.
 ha_category:
   - Image Processing
+ha_iot_class: Cloud Push
 ha_release: 0.37
+ha_domain: microsoft_face
 ---
 
 The `microsoft_face` integration platform is the main integration for Microsoft

@@ -1,10 +1,12 @@
 ---
-title: "Graphite"
-description: "Instructions on how to record Home Assistant history in Graphite."
+title: Graphite
+description: Instructions on how to record Home Assistant history in Graphite.
 logo: graphite.png
 ha_category:
   - History
 ha_release: 0.13
+ha_domain: graphite
+ha_iot_class: Local Push
 ---
 
 The `graphite` integration records all events and state changes and feeds the data to a [graphite](http://graphite.wikidot.com/) instance.
@@ -23,7 +25,7 @@ host:
   type: string
   default: localhost
 port:
-  description: This is a description of what this key is for.
+  description: Port on graphite host.
   required: false
   type: integer
   default: 2003
@@ -33,4 +35,3 @@ prefix:
   type: string
   default: ha
 {% endconfiguration %}
-

@@ -1,12 +1,12 @@
 ---
-title: "Times of the Day Binary Sensor"
-description: "Instructions on how to integrate Times of the Day binary sensors within Home Assistant."
+title: Times of the Day
+description: Instructions on how to integrate Times of the Day binary sensors within Home Assistant.
 ha_category:
   - Binary Sensor
 ha_release: 0.89
 ha_iot_class: Local Push
-logo: home-assistant.png
-ha_qa_scale: internal
+ha_quality_scale: internal
+ha_domain: tod
 ---
 
 The `tod` platform supports binary sensors which get their values by checking if the current time is within defined time ranges.
@@ -52,7 +52,7 @@ after:
   required: true
   type: [string, time]
 after_offset:
-  description: The time offset of the beginning time range.
+  description: The time offset of the ending time range.
   type: time
   required: false
 {% endconfiguration %}

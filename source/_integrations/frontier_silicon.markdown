@@ -1,11 +1,11 @@
 ---
-title: "Frontier Silicon Internet Radios"
-description: "Instructions on how to integrate Frontier Silicon Internet Radios into Home Assistant."
-logo: frontier.png
+title: Frontier Silicon
+description: Instructions on how to integrate Frontier Silicon Internet Radios into Home Assistant.
 ha_category:
   - Media Player
 ha_iot_class: Local Push
-ha_release: "0.40"
+ha_release: '0.40'
+ha_domain: frontier_silicon
 ---
 
 This integration provides support for Internet Radios based on the [Frontier Silicon chipset]. Some of the manufacturers which offer products based on these chips include: Hama, Medion, Slivercrest, Auna, Technisat, Revo, Pinnel, etc. These devices will be usually controlled by the [UNDOK] app.
@@ -14,7 +14,8 @@ This integration provides support for Internet Radios based on the [Frontier Sil
 * Hama: [IR110], [DIR3110]
 * Medion: [Medion Radios]
 * Silvercrest: [SIRD 14 C2]
-* Some models from: Auna, Technisat, Revo, Pinell
+* Teufel: [Radio 3sixty(2019)]
+* Some models from: Auna, Technisat, Revo, Pinell, Como Audio
 
 This integration was developed and tested with a Hama [DIR3110] and a Medion [MD 87466].
 
@@ -48,6 +49,11 @@ password:
   description: PIN code of the Internet Radio.
   required: false
   default: 1234
+  type: string
+name:
+  description: Friendly name of the Internet Radio. If present this will override the friendly name reported by the radio itself.
+  required: false
+  default: empty
   type: string
 {% endconfiguration %}
 
@@ -99,6 +105,7 @@ The Frontier Silicon API does not provide a multi-user environment. There is alw
 [IR110]: https://www.hama.com/00054823/hama-ir110-internet-radio-internet-radio-multi-room-app-control
 [DIR3110]: https://www.hama.com/00054824/hama-digitalradio-dir3110-internetradio-dab+-fm-multiroom-app-steuerung
 [MD 87466]: https://www.medion.com/gb/service/start/_product.php?msn=50051273&gid=14
+[Radio 3sixty(2019)]: https://teufel.de/radio-3sixty-2019-105437000
 [SIRD 14 C2]: https://www.silvercrest-multiroom.de/fileadmin/user_upload/pdf/handbucher/Bedienungsanleitungen/IR/279398_SIRD_14_C2_ML4_V1.1_GB_CZ_SK_DE.pdf
 [fsapi]: https://github.com/zhelev/python-fsapi
 [UNDOK]: https://www.frontier-silicon.com/undok

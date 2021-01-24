@@ -1,19 +1,19 @@
 ---
-title: "IFTTT"
-description: "Instructions on how to setup IFTTT within Home Assistant."
-logo: ifttt.png
+title: IFTTT
+description: Instructions on how to setup IFTTT within Home Assistant.
 ha_category:
   - Automation
-featured: true
 ha_iot_class: Cloud Push
-ha_release: 0.80
+ha_release: 0.8
+ha_config_flow: true
+ha_domain: ifttt
 ---
 
 [IFTTT](https://ifttt.com) is a web service that allows users to create chains of simple conditional statements, so-called "Applets". With the IFTTT component, you can trigger applets through the **"Webhooks"** service (which was previously the **"Maker"** channel).
 
 ## Sending events from IFTTT to Home Assistant
 
-To be able to receive events from IFTTT, your Home Assistant instance needs to be accessible from the web ([Hass.io instructions](/addons/duckdns/)) and you need to have the `base_url` configured for the HTTP integration ([docs](/integrations/http/#base_url)).
+To be able to receive events from IFTTT, your Home Assistant instance needs to be accessible from the web and you need to have the external URL [configured](/docs/configuration/basic).
 
 ### Setting up the integration
 
@@ -32,6 +32,7 @@ For example, set the body of the IFTTT webhook to:
 You then need to consume that incoming information with the following automation:
 
 {% raw %}
+
 ```yaml
 automation:
 - id: this_is_the_automation_id
@@ -43,10 +44,11 @@ automation:
     platform: event
   condition: []
   action:
-  - data_template:
+  - data:
       entity_id: '{{ trigger.event.data.entity_id }}'
-    service_template: '{{ trigger.event.data.service }}'
+    service: '{{ trigger.event.data.service }}'
 ```
+
 {% endraw %}
 
 ## Sending events to IFTTT
@@ -58,7 +60,6 @@ ifttt:
 ```
 
 `key` is your API key which can be obtained by viewing the **Settings** of the [Webhooks applet](https://ifttt.com/services/maker_webhooks/settings). It's the last part of the URL (e.g., https://maker.ifttt.com/use/MYAPIKEY) you will find under **My Applets** > **Webhooks** > **Settings**.
-
 
 <p class='img'>
 <img src='/images/integrations/ifttt/finding_key.png' />
@@ -83,7 +84,6 @@ ifttt:
     YOUR_KEY_NAME2: YOUR_API_KEY2
 ```
 
-
 ### Testing your trigger
 
 You can use **Developer Tools** to test your [Webhooks](https://ifttt.com/maker_webhooks) trigger. To do this, open the Home Assistant sidebar, click on Developer Tools, and then the **Services** tab. Fill in the following values:
@@ -99,7 +99,7 @@ Service Data | `{"event": "EventName", "value1": "Hello World"}`
 When your screen looks like this, click the 'call service' button.
 </p>
 
-By default the trigger is sent to all the api keys from `configuration.yaml`. If you
+By default, the trigger is sent to all the API keys from `configuration.yaml`. If you
 want to send the trigger to a specific key use the `target` field:
 
 Field | Value
@@ -125,6 +125,7 @@ You need to setup a unique trigger for each event you sent to IFTTT.
 </p>
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml Automation entry
 automation:
@@ -136,11 +137,13 @@ automation:
     service: ifttt.trigger
     data: {"event":"TestHA_Trigger", "value1":"Hello World!"}
 ```
+
 {% endraw %}
 
-IFTTT can also be used in scripts and with `data_template`.  Here is the above automation broken into an automation and script using variables and data_templates.
+IFTTT can also be used in scripts and with templates. Here is the above automation broken into an automation and script using variables and templates.
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml Automation entry
 automation:
@@ -150,27 +153,22 @@ automation:
     event: start
   action:
     service: script.ifttt_notify
-    data_template:
+    data:
       value1: 'HA Status:'
       value2: "{{ trigger.event.data.entity_id.split('_')[1] }} is "
       value3: "{{ trigger.event.data.to_state.state }}"
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```yaml
 #Example Script to send TestHA_Trigger to IFTTT but with some other data (homeassistant UP).
 ifttt_notify:
   sequence:
     - service: ifttt.trigger
-      data_template: {"event":"TestHA_Trigger", "value1":"{{ value1 }}", "value2":"{{ value2 }}", "value3":"{{ value3 }}"}
+      data: {"event":"TestHA_Trigger", "value1":"{{ value1 }}", "value2":"{{ value2 }}", "value3":"{{ value3 }}"}
 ```
+
 {% endraw %}
-
-### Additional Channel Examples
-
-Additional examples of using IFTTT channels can be found below.
-
-Channel | Description
------ | -----
-[Manything](/integrations/ifttt.manything/) | Automates turning recording ON and OFF based on Home Assistant AWAY and HOME values.

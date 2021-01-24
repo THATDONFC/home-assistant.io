@@ -1,12 +1,12 @@
 ---
-title: "SABnzbd"
-description: "Instructions on how to integrate SABnzbd with Home Assistant."
-logo: sabnzbd.png
+title: SABnzbd
+description: Instructions on how to integrate SABnzbd with Home Assistant.
 ha_category:
   - Downloading
   - Sensor
-ha_release: 0.70
+ha_release: 0.7
 ha_iot_class: Local Polling
+ha_domain: sabnzbd
 ---
 
 The `sabnzbd` integration will allow you to monitor and control your downloads with [SABnzbd](https://sabnzbd.org) from within Home Assistant and setup automations based on the information.
@@ -14,7 +14,7 @@ The `sabnzbd` integration will allow you to monitor and control your downloads w
 If SABnzbd is discovered on your network, you can enter your API Key in the Configurator. Press "CONFIGURE" to do it.
 
 <p class='img'>
-  <img src='{{site_root}}/images/screenshots/sabnzbd-configure.png' />
+  <img src='/images/screenshots/sabnzbd-configure.png' />
 </p>
 
 This will create services for interacting with SABnzbd in scripts and automations, but no sensors will be created.

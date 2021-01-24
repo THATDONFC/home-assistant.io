@@ -1,10 +1,13 @@
 ---
-title: "Quantum Gateway"
-description: "Instructions on how to integrate Quantum Gateways into Home Assistant."
+title: Quantum Gateway
+description: Instructions on how to integrate Quantum Gateways into Home Assistant.
 ha_category:
   - Presence Detection
-logo: fios.svg
+ha_iot_class: Local Polling
 ha_release: 0.81
+ha_codeowners:
+  - '@cisasteelersfan'
+ha_domain: quantum_gateway
 ---
 
 The `quantum_gateway` device tracker platform offers presence detection by looking at connected devices to a Verizon Fios gateway.

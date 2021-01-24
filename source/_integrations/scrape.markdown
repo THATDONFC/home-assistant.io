@@ -1,11 +1,13 @@
 ---
-title: "Scrape Sensor"
-description: "Instructions on how to integrate Web scrape sensors into Home Assistant."
-logo: home-assistant.png
+title: Scrape
+description: Instructions on how to integrate Web scrape sensors into Home Assistant.
 ha_category:
   - Sensor
 ha_release: 0.31
 ha_iot_class: Cloud Polling
+ha_codeowners:
+  - '@fabaff'
+ha_domain: scrape
 ---
 
 The `scrape` sensor platform is scraping information from websites. The sensor loads a HTML page and gives you the option to search and split out a value. As this is not a full-blown web scraper like [scrapy](https://scrapy.org/), it will most likely only work with simple web pages and it can be time-consuming to get the right section.
@@ -43,6 +45,10 @@ name:
   required: false
   default: Web scrape
   type: string
+value_template:
+  description: Defines a template to get the state of the sensor.
+  required: false
+  type: template
 unit_of_measurement:
   description: Defines the units of measurement of the sensor, if any.
   required: false
@@ -79,6 +85,7 @@ In this section you find some real-life examples of how to use this sensor. Ther
 The current release Home Assistant is published on [https://www.home-assistant.io/](/)
 
 {% raw %}
+
 ```yaml
 sensor:
 # Example configuration.yaml entry
@@ -88,6 +95,7 @@ sensor:
     select: ".current-version h1"
     value_template: '{{ value.split(":")[1] }}'
 ```
+
 {% endraw %}
 
 ### Available implementations
@@ -95,6 +103,7 @@ sensor:
 Get the counter for all our implementations from the [Component overview](/integrations/) page.
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml entry
 sensor:
@@ -104,6 +113,7 @@ sensor:
     select: 'a[href="#all"]'
     value_template: '{{ value.split("(")[1].split(")")[0] }}'
 ```
+
 {% endraw %}
 
 ### Get a value out of a tag
@@ -154,6 +164,7 @@ sensor:
 This example tries to retrieve the price for electricity.
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml entry
 sensor:
@@ -164,6 +175,7 @@ sensor:
     value_template: '{{ ((value.split(" ")[0]) | replace (",", ".")) }}'
     unit_of_measurement: "öre/kWh"
 ```
+
 {% endraw %}
 
 ### BOM Weather
@@ -171,6 +183,7 @@ sensor:
 The Australian Bureau of Meteorology website returns an error if the User Agent header is not sent.
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml entry
 sensor:
@@ -184,4 +197,5 @@ sensor:
     headers:
       User-Agent: Mozilla/5.0
 ```
+
 {% endraw %}

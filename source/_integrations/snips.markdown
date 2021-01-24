@@ -1,11 +1,18 @@
 ---
-title: "Snips"
-description: "Instructions on how to integrate Snips within Home Assistant."
-logo: snips.png
+title: Snips
+description: Instructions on how to integrate Snips within Home Assistant.
 ha_category:
   - Voice
 ha_release: 0.48
+ha_domain: snips
+ha_iot_class: Local Push
 ---
+
+<div class='note warning'>
+  
+The Snips Console no longer available due to acquisition by Sonos. For more details, read the [announcement on the Snips forum](http://web.archive.org/web/20200109164247/https://forum.snips.ai/t/important-message-regarding-the-snips-console/4145).
+
+</div>
 
 The [Snips Voice Platform](https://www.snips.ai) allows users to add powerful voice assistants to their Raspberry Pi devices without compromising on privacy. It runs 100% on-device, and does not require an internet connection. It features Hotword Detection, Automatic Speech Recognition (ASR), Natural Language Understanding (NLU) and Dialog Management.
 
@@ -27,7 +34,7 @@ The Snips platform can be installed via the Snips APT/Debian repository.
 sudo apt-get update
 sudo apt-get install -y dirmngr
 sudo bash -c  'echo "deb https://raspbian.snips.ai/$(lsb_release -cs) stable main" > /etc/apt/sources.list.d/snips.list'
-sudo apt-key adv --keyserver pgp.mit.edu --recv-keys D4F50CDCA10A2849
+sudo apt-key adv --fetch-keys https://raspbian.snips.ai/531DD1A7B702B14D.pub
 sudo apt-get update
 sudo apt-get install -y snips-platform-voice
 ```
@@ -138,6 +145,7 @@ In Home Assistant, we trigger actions based on intents produced by Snips using t
 Note: If your Snips action is prefixed with a username (e.g., `john:playmusic` or `john__playmusic`), the Snips integration in Home Assistant will try and strip off the username. Bear this in mind if you get the error `Received unknown intent` even when what you see on the MQTT bus looks correct. Internally the Snips integration is trying to match the non-username version of the intent (i.e., just `playmusic`).
 
 {% raw %}
+
 ```yaml
 snips:
 
@@ -145,13 +153,14 @@ intent_script:
   ActivateLightColor:
     action:
       - service: light.turn_on
-        data_template:
-          entity_id: light.{{ objectLocation | replace(" ","_") }}
-          color_name: {{ objectColor }}
+        data:
+          entity_id: 'light.{{ objectLocation | replace(" ","_") }}'
+          color_name: '{{ objectColor }}'
 ```
+
 {% endraw %}
 
-In the `data_template` block, we have access to special variables, corresponding to the slot names for the intent. In the present case, the `ActivateLightColor` has two slots, `objectLocation` and `objectColor`.
+In the `data` block, we have access to special variables, corresponding to the slot names for the intent. In the present case, the `ActivateLightColor` has two slots, `objectLocation` and `objectColor`.
 
 ### Special slots
 
@@ -162,6 +171,7 @@ In the above example, the slots are plain strings. However, Snips has a duration
 In this example if we had an intent triggered with 'Set a timer for five minutes', `duration:` would equal 300 and `duration_raw:` would be set to 'five minutes'. The duration can be easily used to trigger Home Assistant events and the `duration_raw:` could be used to send a human readable response or alert.
 
 {% raw %}
+
 ```yaml
 SetTimer:
   speech:
@@ -169,7 +179,7 @@ SetTimer:
     text: 'Set a timer'
   action:
     service: script.set_timer
-    data_template:
+    data:
       name: "{{ timer_name }}"
       duration: "{{ timer_duration }}"
       siteId: "{{ site_id }}"
@@ -177,6 +187,7 @@ SetTimer:
       duration_raw: "{{ raw_value }}"
       probability: "{{ probability }}"
 ```
+
 {% endraw %}
 
 ### Sending TTS Notifications
@@ -200,10 +211,6 @@ You can send TTS notifications to Snips using the `snips.say` and `snips.say_act
 | `custom_data`          |      yes | custom data that will be included with all messages in this session. |
 | `can_be_enqueued`      |      yes | If True, session waits for an open session to end, if False session is dropped if one is running. |
 | `intent_filter`        |      yes | Array of Strings - A list of intents names to restrict the NLU resolution to on the first query. |
-
-### Snips Support
-
-There is an active [Forum](https://forum.snips.ai) for further support.
 
 ### Configuration Examples
 
@@ -285,6 +292,7 @@ So now you can open and close your garage door, let's check the weather. Add the
 Then add this to your configuration file.
 
 {% raw %}
+
 ```yaml
 intent_script:
   searchWeatherForecast:
@@ -298,4 +306,5 @@ intent_script:
         {{ states('sensor.dark_sky_weather_daily_high_temperature') | round(0)}}
         and {{ states('sensor.dark_sky_weather_hourly_summary') }}
 ```
+
 {% endraw %}

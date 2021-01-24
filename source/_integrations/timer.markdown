@@ -1,11 +1,12 @@
 ---
-title: "Timer"
-description: "Instructions on how to integrate timers into Home Assistant."
-logo: home-assistant.png
+title: Timer
+description: Instructions on how to integrate timers into Home Assistant.
 ha_category:
   - Automation
 ha_release: 0.57
-ha_qa_scale: internal
+ha_quality_scale: internal
+ha_domain: timer
+ha_iot_class: Calculated
 ---
 
 The `timer` integration aims to simplify automations based on (dynamic) durations.
@@ -50,15 +51,23 @@ timer:
 
 Pick an icon that you can find on [materialdesignicons.com](https://materialdesignicons.com/) to use for your timer and prefix the name with `mdi:`. For example `mdi:car`, `mdi:ambulance`, or  `mdi:motorbike`.
 
+## Possible States
+
+| State | Description |
+| ----- | ----------- |
+| `idle` | Timer is idle because the timer finished, was canceled or was never started |
+| `active` | Timer is currently running because it was (re-)started |
+| `paused` | Timer is paused because it was paused |
+
 ## Events
 
 |           Event | Description |
 | --------------- | ----------- |
-| timer.cancelled | Fired when a timer has been canceled |
-| timer.finished | Fired when a timer has completed |
-| timer.started | Fired when a timer has been started|
-| timer.restarted | Fired when a timer has been restarted |
-| timer.paused | Fired when a timer has been paused |
+| `timer.cancelled` | Fired when a timer has been canceled |
+| `timer.finished` | Fired when a timer has completed |
+| `timer.started` | Fired when a timer has been started|
+| `timer.restarted` | Fired when a timer has been restarted |
+| `timer.paused` | Fired when a timer has been paused |
 
 ## Services
 
@@ -96,15 +105,13 @@ Manually finish a running timer earlier than scheduled. You can also use `entity
 | ---------------------- | -------- | ----------- |
 | `entity_id`            |      no  | Name of the entity to take action, e.g., `timer.timer0`. |
 
+### Service `timer.reload`
+
+Reload `timer`'s configuration without restarting Home Assistant itself. This service takes no service data attributes.
+
 ### Use the service
 
-Select <img src='/images/screenshots/developer-tool-services-icon.png' alt='service developer tool icon' class="no-shadow" height="38" /> **Services** from the **Developer Tools**. Choose **timer** from the list of **Domains**, select the **Service**, enter something like the sample below into the **Service Data** field, and hit **CALL SERVICE**.
-
-```json
-{
-  "entity_id": "timer.timer0"
-}
-```
+Navigate to **Developer Tools** -> **Services** and select the `timer.start` service, then click the **Fill Example Data** button. Now change the `entity_id` and `duration` and click **Call Service** button.
 
 ## Examples
 

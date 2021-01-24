@@ -1,11 +1,14 @@
 ---
-title: "Matrix"
-description: "Matrix chatbot support"
-logo: matrix.png
+title: Matrix
+description: Matrix chatbot support
 ha_category:
   - Hub
   - Notifications
+ha_iot_class: Cloud Push
 ha_release: 0.69
+ha_codeowners:
+  - '@tinloaf'
+ha_domain: matrix
 ---
 
 This integration allows you to send messages to matrix rooms, as well as to react to messages in matrix rooms. Reacting to commands is accomplished by firing an event when one of the configured commands is triggered.
@@ -63,7 +66,7 @@ commands:
       required: false
       type: string
     expression:
-      description: "Specifies a regular expression (in python regexp syntax) that the bot should listen to. The bot will react to any message that matches the regular expression."
+      description: "Specifies a regular expression (in Python regexp syntax) that the bot should listen to. The bot will react to any message that matches the regular expression."
       required: false
       type: string
     name:
@@ -71,7 +74,7 @@ commands:
       required: true
       type: string
     rooms:
-      description: "A list of rooms that the bot should listen for this command in. If this is not given, the *rooms* list from the main config is used. Please note that every room in this list must also be in the main *room* config."
+      description: "A list of rooms that the bot should listen for this command in. If this is not given, the *rooms* list from the main configuration is used. Please note that every room in this list must also be in the main *room* configuration."
       required: false
       type: [string]
       default: empty
@@ -88,6 +91,7 @@ If the command is a word command, the `data` field contains a list of the comman
 This example also uses the [matrix `notify` platform](#notifications).
 
 {% raw %}
+
 ```yaml
 # The Matrix component
 matrix:
@@ -129,9 +133,10 @@ automation:
         command: introduction
     action:
       service: notify.matrix_notify
-      data_template:
+      data:
         message: "Hello {{trigger.event.data.args['name']}}"
 ```
+
 {% endraw %}
 
 This configuration will:

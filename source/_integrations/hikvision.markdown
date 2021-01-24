@@ -1,11 +1,13 @@
 ---
-title: Hikvision Binary Sensor
-description: "Instructions on how to set up Hikvision camera binary sensors within Home Assistant."
-logo: hikvision.png
+title: Hikvision
+description: Instructions on how to set up Hikvision camera binary sensors within Home Assistant.
 ha_category:
   - Binary Sensor
 ha_release: 0.35
 ha_iot_class: Local Push
+ha_codeowners:
+  - '@mezz64'
+ha_domain: hikvision
 ---
 
 The Hikvision Binary Sensor is a platform that parses the event stream of a
@@ -55,6 +57,13 @@ and has been confirmed to work with the following models:
 - DS-2CD2042WD-I
 - DS-2CD2142FWD-I
 - DS-2CD2155FWD-IS
+- DS-2CD2385G1
+- IPC-D140H(-M)
+- DS-7616NI-K2 (NVR)
+
+This platform also was confirmed to work with the following Hikvison-based NVRS
+
+- N46PCK (Annke H800 4K NVR)
 
 ## Configuration
 
@@ -94,7 +103,7 @@ port:
   type: integer
   default: 80
 ssl:
-  description: "`true` if you want to connect with https. Be sure to set the port also."
+  description: "`true` if you want to connect with HTTPS. Be sure to set the port also."
   required: false
   type: boolean
   default: false

@@ -13,7 +13,7 @@ The MQTT integration will register the service `mqtt.publish` which allows publi
 | `topic` | no | Topic to publish payload to.
 | `payload` | yes | Payload to publish.
 | `payload_template` | yes | Template to render as payload value. Ignored if payload given.
-| `qos` | yes | Quality of Service to use.
+| `qos` | yes | Quality of Service to use. (default: 0)
 | `retain` | yes | If message should have the retain flag set. (default: false)
 
 <div class='note'>
@@ -28,7 +28,7 @@ payload: on
 {% raw %}
 ```yaml
 topic: home-assistant/light/1/state
-payload_template: {{ states('device_tracker.paulus') }}
+payload_template: "{{ states('device_tracker.paulus') }}"
 ```
 {% endraw %}
 
@@ -37,7 +37,7 @@ payload_template: {{ states('device_tracker.paulus') }}
 ```yaml
 topic: home-assistant/light/1/state
 payload: "{\"Status\":\"off\", \"Data\":\"something\"}"
-``` 
+```
 
 Example of how to use `qos` and `retain`:
 
@@ -46,4 +46,17 @@ topic: home-assistant/light/1/command
 payload: on
 qos: 2
 retain: true
+```
+
+### Service `mqtt.dump`
+
+Listen to the specified topic matcher and dumps all received messages within a specific duration into the file `mqtt_dump.txt` in your configuration folder. This is useful when debugging a problem.
+
+| Service data attribute | Optional | Description |
+| ---------------------- | -------- | ----------- |
+| `topic` | no | Topic to dump. Can contain a wildcard (`#` or `+`).
+| `duration` | yes | Duration in seconds that we will listen for messages. Default is 5 seconds.
+
+```yaml
+topic: openzwave/#
 ```

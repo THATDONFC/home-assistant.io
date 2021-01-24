@@ -1,11 +1,14 @@
 ---
-title: "Shell command"
-description: "Instructions on how to integrate Shell commands into Home Assistant."
+title: Shell Command
+description: Instructions on how to integrate Shell commands into Home Assistant.
 ha_category:
   - Automation
-logo: home-assistant.png
-ha_qa_scale: internal
+ha_iot_class: Local Push
 ha_release: 0.7.6
+ha_quality_scale: internal
+ha_codeowners:
+  - '@home-assistant/core'
+ha_domain: shell_command
 ---
 
 This integration can expose regular shell commands as services. Services can be called from a [script] or in [automation].
@@ -35,7 +38,6 @@ Any service data passed into the service call to activate the shell command will
 `stdout` and `stderr` output from the command are both captured and will be logged by setting the [log level](/integrations/logger/) to debug.
 
 ```yaml
-
 # Apply value of a GUI slider to the shell_command
 automation:
   - alias: run_set_ac
@@ -55,6 +57,6 @@ input_number:
 
 {% raw %}
 shell_command:
-  set_ac_to_slider: 'irsend SEND_ONCE DELONGHI AC_{{ states('input_number.ac_temperature') }}_AUTO'
+  set_ac_to_slider: 'irsend SEND_ONCE DELONGHI AC_{{ states("input_number.ac_temperature") }}_AUTO'
 {% endraw %}
 ```

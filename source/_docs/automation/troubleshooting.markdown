@@ -1,7 +1,6 @@
 ---
 title: "Troubleshooting Automations"
 description: "Tips on how to troubleshoot your automations."
-redirect_from: /getting-started/automation-troubleshooting/
 ---
 
 You can verify that your automation rules are being initialized correctly by watching both the realtime logs (`homeassistant.log` in the configuration directory) and also the [Logbook](/integrations/logbook/). The realtime logs will show the rules being initialized (once for each trigger), example:
@@ -28,7 +27,7 @@ Please note that if you click on **Trigger** of an automation in the frontend, *
 All this makes that Trigger feature pretty limited and nearly useless for debugging purposes so you need to find another way.
 Make sure you check and adapt to your circumstances appropriate examples from Automation Trigger, Conditions and Actions.
 
-It is also useful to go to **Configuration** -> **Server Control** and click on **Check Config** button in Configuration validation section to make sure there are no syntax errors before restarting Home Assistant. In order for **Check Config** to be visible, you must enable **Advanced Mode** on your user profile.
+It is also useful to go to **Configuration** -> **Server Control** and click on **Check Configuration** button in Configuration validation section to make sure there are no syntax errors before restarting Home Assistant. In order for **Check configuration** to be visible, you must enable **Advanced Mode** on your user profile.
 
 If your automation uses templates in any part, you can do the following to make sure it works as expected:
 
