@@ -1,7 +1,6 @@
 ---
 title: Flic
 description: Instructions on how to integrate flic buttons within Home Assistant.
-logo: flic.png
 ha_category:
   - Binary Sensor
 ha_iot_class: Local Push
@@ -99,8 +98,8 @@ automation:
       platform: event
       event_type: flic_click
     action:
-      - service_template: notify.html5
-        data_template:
+      - service: notify.html5
+        data:
           title: "flic click"
           message: {% raw %}"flic {{ trigger.event.data.button_name }} was {{ trigger.event.data.click_type }} clicked"{% endraw %}
 ```

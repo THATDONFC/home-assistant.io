@@ -1,5 +1,5 @@
 ---
-title: IKEA TRÅDFRI (TRADFRI)
+title: IKEA TRÅDFRI
 description: Access and control your IKEA Trådfri Gateway and its connected Zigbee-based devices.
 featured: true
 ha_iot_class: Local Polling
@@ -46,6 +46,10 @@ allow_tradfri_groups:
 {% endconfiguration %}
 
 ## Troubleshooting
+
+### Incorrect security key
+
+`Fatal DTLS error: code 20` might indicate a missing or incorrect security key. Pay close attention as e.g., "I" and "l" can easily be confused.
 
 ### Firmware updates
 

@@ -1,7 +1,6 @@
 ---
 title: NETGEAR LTE
 description: Instructions on how to integrate your NETGEAR LTE modem within Home Assistant.
-logo: netgear.png
 ha_release: 0.72
 ha_category:
   - Network
@@ -193,10 +192,10 @@ automation:
         event_type: netgear_lte_sms
     action:
       - service: conversation.process
-        data_template:
+        data:
           text: '{{ trigger.event.data.message }}'
       - service: netgear_lte.delete_sms
-        data_template:
+        data:
           host: '{{ trigger.event.data.host }}'
           sms_id: '{{ trigger.event.data.sms_id }}'
 ```

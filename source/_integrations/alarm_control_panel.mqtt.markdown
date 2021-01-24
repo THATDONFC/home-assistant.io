@@ -16,8 +16,11 @@ The integration will accept the following states from your Alarm Panel (in lower
 - `armed_home`
 - `armed_away`
 - `armed_night`
+- `armed_custom_bypass`
 - `pending`
 - `triggered`
+- `arming`
+- `disarming`
 
 The integration can control your Alarm Panel by publishing to the `command_topic` when a user interacts with the Home Assistant frontend.
 
@@ -34,8 +37,32 @@ alarm_control_panel:
 ```
 
 {% configuration %}
+availability:
+  description: A list of MQTT topics subscribed to receive availability (online/offline) updates. Must not be used together with `availability_topic`.
+  required: false
+  type: list
+  keys:
+    payload_available:
+      description: The payload that represents the available state.
+      required: false
+      type: string
+      default: online
+    payload_not_available:
+      description: The payload that represents the unavailable state.
+      required: false
+      type: string
+      default: offline
+    topic:
+      description: An MQTT topic subscribed to receive availability (online/offline) updates.
+      required: true
+      type: string
+availability_mode:
+  description: When `availability` is configured, this controls the conditions needed to set the entity to `available`. Valid entries are `all`, `any`, and `latest`. If set to `all`, `payload_available` must be received on all configured availability topics before the entity is marked as online. If set to `any`, `payload_available` must be received on at least one configured availability topic before the entity is marked as online. If set to `latest`, the last `payload_available` or `payload_not_available` received on any configured availability topic controls the availability.
+  required: false
+  type: string
+  default: latest
 availability_topic:
-  description: The MQTT topic subscribed to receive availability (online/offline) updates.
+  description: The MQTT topic subscribed to receive availability (online/offline) updates. Must not be used together with `availability`.
   required: false
   type: string
 code:
@@ -90,6 +117,10 @@ device:
       description: 'The firmware version of the device.'
       required: false
       type: string
+    via_device:
+      description: 'Identifier of a device that routes messages between this device and Home Assistant. Examples of such devices are hubs, or parent devices of a sub-device. This is used to show device topology in Home Assistant.'
+      required: false
+      type: string
 json_attributes_template:
   description: "Defines a [template](/docs/configuration/templating/#processing-incoming-data) to extract the JSON dictionary from messages received on the `json_attributes_topic`. Usage example can be found in [MQTT sensor](/integrations/sensor.mqtt/#json-attributes-template-configuration) documentation."
   required: false
@@ -118,6 +149,11 @@ payload_arm_night:
   required: false
   type: string
   default: ARM_NIGHT
+payload_arm_custom_bypass:
+  description: The payload to set armed-custom-bypass mode on your Alarm Panel.
+  required: false
+  type: string
+  default: ARM_CUSTOM_BYPASS
 payload_available:
   description: The payload that represents the available state.
   required: false
@@ -138,6 +174,11 @@ qos:
   required: false
   type: integer
   default: 0
+retain:
+  description: If the published message should have the retain flag on or not.
+  required: false
+  type: boolean
+  default: false
 state_topic:
   description: The MQTT topic subscribed to receive state updates.
   required: true

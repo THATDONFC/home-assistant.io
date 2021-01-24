@@ -1,5 +1,5 @@
 ---
-title: Openuv
+title: OpenUV
 description: Instructions on how to integrate OpenUV within Home Assistant.
 ha_category:
   - Health
@@ -36,34 +36,20 @@ the `update_protection_data` services).
 
 ## Configuration
 
-To retrieve data from OpenUV, add the following to your `configuration.yaml`
-file:
+To configure the `openuv` integration, navigate to **Configuration** -> **Integrations**
+in the Home Assistant UI.
 
-```yaml
-openuv:
-  api_key: YOUR_OPENUV_API_KEY
-```
+## Sensors
 
-{% configuration %}
-api_key:
-  description: The OpenUV API key.
-  required: true
-  type: string
-elevation:
-  description: The elevation of the monitored location; if omitted, the value specified in `configuration.yaml` will be used.
-  required: false
-  type: float
-latitude:
-  description: The latitude of the monitored location; if omitted, the value specified in `configuration.yaml` will be used.
-  required: false
-  type: float
-longitude:
-  description: The longitude of the monitored location; if omitted, the value specified in `configuration.yaml` will be used.
-  required: false
-  type: float
-{% endconfiguration %}
+| Name | Type | Value |
+|------|------|-------|
+| Current Ozone Level | Sensor | ozone level in du (Dobson Units) |
+| Current UV Index | Sensor | UV Index (numerical value) |
+| Current UV Level | Sensor | UV Level (as literal) |
+| Max UV Index | Sensor | max UV Index for the day (at solar noon) |
+| Protection Window | Binary Sensor | 'On' when protection window is needed |
 
-## The Fitzpatrick Scale
+### The Fitzpatrick Scale
 
 The approximate number of minutes of a particular skin type can be exposed to
 the sun before burning/tanning starts is based on the
@@ -74,6 +60,15 @@ The above guidelines constitute estimates and are intended to help informed
 decision making. They should not replace analysis, advice or diagnosis from a
 trained medical professional.
 </div>
+
+OpenUV integration provide sensors for safe exposure time (in minutes) based on skin type:
+
+- Skin Type 1 Safe Exposure Time
+- Skin Type 2 Safe Exposure Time
+- Skin Type 3 Safe Exposure Time
+- Skin Type 4 Safe Exposure Time
+- Skin Type 5 Safe Exposure Time
+- Skin Type 6 Safe Exposure Time
 
 ## Services
 
@@ -113,6 +108,8 @@ automation:
 
 Update the UV index data every 20 minutes while the sun is at least 10 degrees above the horizon:
 
+{% raw %}
+
 ```yaml
 automation:
   - alias: Update OpenUV every 20 minutes while the sun is at least 10 degrees above the horizon
@@ -128,7 +125,10 @@ automation:
       service: openuv.update_uv_index_data
 ```
 
+{% endraw %}
+
 Update the protection window once a day:
+
 ```yaml
 automation:
   - alias: Update OpenUV protection window once a day

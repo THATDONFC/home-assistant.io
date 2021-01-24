@@ -8,13 +8,14 @@ ha_quality_scale: internal
 ha_codeowners:
   - '@home-assistant/core'
 ha_domain: api
+ha_iot_class:
 ---
 
-The `api` integration exposes a RESTful API and allows one to interact with a Home Assistant instance that is running headless. This integration depends on the [`http` integration](/integrations/http/).
+The `api` integration exposes a RESTful API and allows one to interact with a Home Assistant instance that is running headless. This integration depends on the [HTTP integration](/integrations/http/).
 
 ```yaml
 # Example configuration.yaml entry
 api:
 ```
 
-For details to use the API, please refer to the [REST API](/developers/rest_api/) or the [Python REST API documentation](/developers/python_api/) in the "Developer" section.
+For details to use the API, please refer to the [REST API](/developers/rest_api/) in the "Developer" section.

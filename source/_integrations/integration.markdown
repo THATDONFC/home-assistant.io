@@ -4,9 +4,9 @@ description: Instructions on how to integrate Integration Sensor into Home Assis
 ha_category:
   - Utility
   - Energy
+  - Sensor
 ha_release: 0.87
 ha_iot_class: Local Push
-logo: integral.png
 ha_quality_scale: internal
 ha_codeowners:
   - '@dgomes'
@@ -56,7 +56,7 @@ unit:
   required: false
   type: string
 method:
-  description: Riemann sum method to be used. Available methods are `trapezoidal`, `left` and `right`."
+  description: "Riemann sum method to be used. Available methods are `trapezoidal`, `left` and `right`."
   required: false
   type: string
   default: trapezoidal

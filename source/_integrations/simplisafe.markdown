@@ -1,8 +1,8 @@
 ---
 title: SimpliSafe
 description: Instructions on how to integrate SimpliSafe into Home Assistant.
-logo: simplisafe.png
 ha_release: 0.81
+ha_iot_class: Cloud Polling
 ha_category:
   - Alarm
   - Lock
@@ -17,40 +17,34 @@ The `simplisafe` integration integrates [SimpliSafe home security](https://simpl
 There is currently support for the following device types within Home Assistant:
 
 - **Alarm Control Panel**: reports on the current alarm status and can be used to arm and disarm the system.
-- **Lock**: Reports on `Door Locks` and can be used to lock and unlock a lock.
+- **CO Detector**: reports on the carbon monoxide sensor status*.
+- **Entry Sensor**: reports on the current entry sensor status*.
+- **Freeze Sensor**: reports on the freeze sensor temperature*.
+- **Glass Break Sensor**: reports on the glass breakage sensor status*.
+- **Lock**: reports on `Door Locks` and can be used to lock and unlock a lock.
+- **Motion Sensor**: triggers [events](#events) if the alarm is armed or if secret alerts are enabled in SimpliSafe.
+- **Siren**: reports on the siren status*.
+- **Smoke Detector**: reports on the smoke sensor status*.
+- **Water Sensor**: reports on water sensor status*.
+
+* Sensor status is only available for SimpliSafe V3 systems and is updated once every 30 seconds, so information displayed in Home Assistant may be delayed.
 
 ## Configuration
 
-To enable this component, add the following lines to your `configuration.yaml`:
-
-```yaml
-# Example configuration.yaml entry
-simplisafe:
-  accounts:
-    - username: user@email.com
-      password: password123
-```
-
-{% configuration %}
-username:
-  description: The email address of a SimpliSafe account.
-  required: true
-  type: string
-password:
-  description: The password of a SimpliSafe account.
-  required: true
-  type: string
-code:
-  description: A code to enable or disable the alarm in the frontend.
-  required: false
-  type: string
-{% endconfiguration %}
+This integration can be configured via the Home Assistant UI by navigating to
+**Configuration** -> **Integrations**.
 
 ## Services
 
 Note that the `system_id` parameter required by the below service calls can be discovered
 by looking at the device state attributes for the integration's `alarm_control_panel`
 entity.
+
+### `simplisafe.clear_notifications`
+
+Clear any existing notifications within the SimpliSafe cloud; this will mark existing
+notifications as "read" in the SimpliSafe web and mobile apps, as well as prevent them
+from triggering future `SIMPLISAFE_NOTIFICATION` events.
 
 ### `simplisafe.remove_pin`
 
@@ -145,3 +139,8 @@ event data that contains the following keys:
 * `code`: The SimpliSafe code for the notification
 * `message`: The actual text of the notification
 * `timestamp`: The UTC timestamp of the notification
+
+Note that when Home Assistant restarts, `SIMPLISAFE_NOTIFICATION` events will fire once
+again for any notifications still active in the SimpliSafe web and mobile apps. To
+prevent this, either (a) clear them in the web/mobile app or (b) utilize the 
+`simplisafe.clear_notifications` service described above.

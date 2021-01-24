@@ -1,7 +1,6 @@
 ---
 title: OpenSky Network
 description: Instructions on how to integrate OpenSky Network into Home Assistant.
-logo: opensky.png
 ha_category:
   - Transport
 ha_release: 0.43
@@ -43,6 +42,7 @@ Both events have three attributes:
 To receive notifications of the entering flights using the [Home Assistant Companion App](https://companion.home-assistant.io/), add the following lines to your `configuration.yaml` file:
 
 {% raw %}
+
 ```yaml
 automation:
   - alias: 'Flight entry notification'
@@ -51,7 +51,8 @@ automation:
       event_type: opensky_entry
     action:
       service: notify.mobile_app_<device_name>
-      data_template:
-        message : 'Flight entry of {{ trigger.event.data.callsign }} '
+      data:
+        message: 'Flight entry of {{ trigger.event.data.callsign }}'
 ```
+
 {% endraw %}

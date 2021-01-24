@@ -104,12 +104,12 @@ registers:
       default: 0
       type: integer
     data_type:
-      description: Response representation (int, uint, float, custom). If float selected, value will be converted to IEEE 754 floating point format.
+      description: Response representation (int, uint, float, string, custom). If float selected, value will be converted to IEEE 754 floating point format.
       required: false
       default: int
       type: string
     structure:
-      description: "If data_type is custom specify here a double quoted Python struct format string to unpack the value. See Python documentation for details. Ex: >i."
+      description: "If `data_type` is custom specified a double-quoted Python struct is expected here, to format the string to unpack the value. See Python documentation for details. Example: `>i`."
       required: false
       type: string
 {% endconfiguration %}

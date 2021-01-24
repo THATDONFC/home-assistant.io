@@ -1,7 +1,6 @@
 ---
 title: Life360
 description: Instructions how to use Life360 to track devices in Home Assistant.
-logo: life360.png
 ha_release: 0.95
 ha_config_flow: true
 ha_category:
@@ -164,8 +163,6 @@ Therefore, an optional filtering mechanism has been implemented to prevent incon
 
 ### Typical configuration
 
-{% raw %}
-
 ```yaml
 life360:
   # MPH, assuming imperial units.
@@ -185,11 +182,7 @@ life360:
   error_threshold: 3
 ```
 
-{% endraw %}
-
 ### Circle and Member Filtering Example
-
-{% raw %}
 
 ```yaml
 life360:
@@ -201,11 +194,7 @@ life360:
     exclude: John Doe
 ```
 
-{% endraw %}
-
 ### Entering accounts in configuration
-
-{% raw %}
 
 ```yaml
 life360:
@@ -213,8 +202,6 @@ life360:
     - username: LIFE360_USERNAME
       password: LIFE360_PASSWORD
 ```
-
-{% endraw %}
 
 ### Example overdue update automations
 
@@ -228,7 +215,7 @@ automation:
       event_type: life360_update_overdue
     action:
       service: notify.email_me
-      data_template:
+      data:
         title: Life360 update overdue
         message: >
           Update for {{
@@ -242,7 +229,7 @@ automation:
       event_type: life360_update_restored
     action:
       service: notify.email_me
-      data_template:
+      data:
         title: Life360 update restored
         message: >
           Update for {{

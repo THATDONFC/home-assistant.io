@@ -1,13 +1,15 @@
 ---
 title: Logitech Harmony Hub
 description: Instructions on how to integrate Harmony Hub remotes into Home Assistant.
-logo: logitech.png
 ha_category:
   - Remote
 ha_iot_class: Local Push
 ha_release: 0.34
+ha_config_flow: true
 ha_codeowners:
   - '@ehendrix23'
+  - '@bramkragten'
+  - '@bdraco'
 ha_domain: harmony
 ---
 
@@ -19,61 +21,15 @@ Supported units:
 - Harmony Companion
 - Harmony Pro
 - Harmony Elite
+- Harmony Pro 2400
 
-The preferred way to setup the Harmony remote is by enabling the [discovery component](/integrations/discovery/).
+The preferred way to setup the Harmony remote for your installation is via **Configuration** >> **Integrations** in the UI, click the button with `+` sign and from the list of integrations select **Logitech Harmony Hub**.
 
-However, if you want to manually configure the device, you will need to add its settings to your `configuration.yaml` file:
-
-```yaml
-# Example configuration.yaml entry
-remote:
-  - platform: harmony
-    name: Bedroom
-    host: 10.168.1.13
-```
-
-You can override some default configuration values on a discovered hub (e.g., the `port` or `activity`) by adding a `configuration.yaml` setting. In this case leave the `host` setting empty so the platform will discover the host IP automatically, but set the `name` in the configuration to match exactly the name you have set for your Hub so the platform knows what Hub you are trying to configure.
-
-```yaml
-# Example configuration.yaml entry with discovery
-  - platform: harmony
-    name: Living Room
-    activity: Watch TV
-```
-
-{% configuration %}
-name:
-  description: The hub's name to display in the frontend. This name must match the name you have set on the Hub.
-  required: true
-  type: string
-host:
-  description: The Harmony device's IP address. Leave empty for the IP to be discovered automatically.
-  required: false
-  type: string
-port:
-  description: The Harmony device's port.
-  required: false
-  type: integer
-  default: 5222
-activity:
-  description: Activity to use when `turn_on` service is called without any data. Overrides the `activity` setting for this discovered hub.
-  required: false
-  type: string
-delay_secs:
-  description: Default duration in seconds between sending commands to a device.
-  required: false
-  type: float
-  default: 0.4
-hold_secs:
-  description: Default duration in seconds between sending the "press" command and sending the "release" command.
-  required: false
-  type: integer
-  default: 0
-{% endconfiguration %}
+Once `Logitech Harmony Hub` has been configured, the default activity and duration in seconds between sending commands to a device can be adjusted in the settings via **Configuration** >> **Integrations** >> **Your Logitech Harmony Hub**
 
 ### Configuration file
 
-Upon startup one file will be written to your Home Assistant configuration directory per device in the following format: `harmony_REMOTENAME.conf`. The file will contain:
+Upon startup one file will be written to your Home Assistant configuration directory per device in the following format: `harmony_UNIQUE_ID.conf`. The file will contain:
 
 - List of all programmed activity names and ID numbers
 - List of all programmed device names and ID numbers
@@ -216,6 +172,7 @@ Force synchronization between the Harmony device and the Harmony cloud.
 Template sensors can be utilized to display current activity in the frontend.
 
 {% raw %}
+
 ```yaml
 sensor:
   - platform: template
@@ -227,11 +184,13 @@ sensor:
         value_template: '{{ state_attr("remote.bedroom", "current_activity") }}'
         friendly_name: 'bedroom'
 ```
+
 {% endraw %}
 
 The example below shows how to control an `input_boolean` switch using the Harmony remote's current activity. The switch will turn on when the remote's state changes and the Kodi activity is started and off when the remote's state changes and the current activity is "PowerOff".
 
 {% raw %}
+
 ```yaml
 automation:
   - alias: "Watch TV started from harmony hub"
@@ -255,4 +214,5 @@ automation:
       service: input_boolean.turn_off
       entity_id: input_boolean.notify
 ```
+
 {% endraw %}

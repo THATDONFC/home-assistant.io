@@ -1,9 +1,9 @@
 ---
 title: VoiceRSS
 description: Instructions on how to setup VoiceRSS TTS with Home Assistant.
-logo: voicerss.png
 ha_category:
   - Text-to-speech
+ha_iot_class: Cloud Push
 ha_release: 0.35
 ha_domain: voicerss
 ---
@@ -43,7 +43,7 @@ format:
   default: 8khz_8bit_mono
 {% endconfiguration %}
 
-Check the [VoiceRSS API documentation](http://www.voicerss.org/api/documentation.aspx) for allowed values.
+Check the [VoiceRSS API documentation](http://www.voicerss.org/api/) for allowed values.
 
 ## Full configuration example
 

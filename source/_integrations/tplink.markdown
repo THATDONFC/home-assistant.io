@@ -1,7 +1,6 @@
 ---
 title: TP-Link Kasa Smart
 description: Instructions on integrating TP-Link Smart Home Devices to Home Assistant.
-logo: tp-link.png
 ha_category:
   - Hub
   - Switch
@@ -11,6 +10,7 @@ ha_iot_class: Local Polling
 ha_config_flow: true
 ha_codeowners:
   - '@rytilahti'
+  - '@thegardenmonkey'
 ha_domain: tplink
 ---
 
@@ -36,12 +36,14 @@ Plugs are type `switch` when autodiscovery has been disabled.
 - HS100
 - HS103
 - HS105
-- HS110 (This device is capable or reporting energy usage data to template sensors)
+- HS110 (This device is capable of reporting energy usage data to template sensors)
+- KP105
+- KP115
 
 ### Strip (Multi-Plug)
 
 - HS107 (indoor 2-outlet)
-- HS300 (powerstrip 6-outlet) (This device is capable or reporting energy usage data to template sensors)
+- HS300 (powerstrip 6-outlet) (This device is capable of reporting energy usage data to template sensors)
 - KP303 (powerstrip 3-outlet)
 - KP400 (outdoor 2-outlet)
 - KP200 (indoor 2-outlet)
@@ -139,34 +141,37 @@ tplink:
 Devices that are confirmed to support Consumption Reading;
 1. HS110
 2. HS300
+3. KP115
 
-In order to get the power consumption readings from a TP-Link HS110 device, you'll have to create a [template sensor](/integrations/switch.template/).
-In the example below, change all of the `my_tp_switch`'s to match your device's entity ID.
+In order to get the power consumption readings from a TP-Link HS110 device, you'll have to create a [template sensor](/integrations/template/).
+In the example below, change all of the `my_tp_switch`'s to match your device's entity ID (without the domain). For example, if your entity is `switch.whale_heater` then replace `my_tp_switch` with `whale_heater`:
 
 {% raw %}
+
 ```yaml
 sensor:
   - platform: template
     sensors:
       my_tp_switch_amps:
-        friendly_name_template: "{{ states.switch.my_tp_switch.name}} Current"
-        value_template: '{{ states.switch.my_tp_switch.attributes["current_a"] | float }}'
+        friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Current"
+        value_template: "{{ state_attr('switch.my_tp_switch','current_a') | float }}"
         unit_of_measurement: 'A'
       my_tp_switch_watts:
-        friendly_name_template: "{{ states.switch.my_tp_switch.name}} Current Consumption"
-        value_template: '{{ states.switch.my_tp_switch.attributes["current_power_w"] | float }}'
+        friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Current Consumption"
+        value_template: "{{ state_attr('switch.my_tp_switch','current_power_w') | float }}"
         unit_of_measurement: 'W'
       my_tp_switch_total_kwh:
-        friendly_name_template: "{{ states.switch.my_tp_switch.name}} Total Consumption"
-        value_template: '{{ states.switch.my_tp_switch.attributes["total_energy_kwh"] | float }}'
+        friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Total Consumption"
+        value_template: "{{ state_attr('switch.my_tp_switch','total_energy_kwh') | float }}"
         unit_of_measurement: 'kWh'
       my_tp_switch_volts:
-        friendly_name_template: "{{ states.switch.my_tp_switch.name}} Voltage"
-        value_template: '{{ states.switch.my_tp_switch.attributes["voltage"] | float }}'
+        friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Voltage"
+        value_template: "{{ state_attr('switch.my_tp_switch','voltage') | float }}"
         unit_of_measurement: 'V'
       my_tp_switch_today_kwh:
-        friendly_name_template: "{{ states.switch.my_tp_switch.name}} Today's Consumption"
-        value_template: '{{ states.switch.my_tp_switch.attributes["today_energy_kwh"] | float }}'
+        friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Today's Consumption"
+        value_template: "{{ state_attr('switch.my_tp_switch','today_energy_kwh') | float }}"
         unit_of_measurement: 'kWh'
 ```
+
 {% endraw %}

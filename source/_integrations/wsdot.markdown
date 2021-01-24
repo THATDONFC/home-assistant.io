@@ -1,7 +1,6 @@
 ---
 title: Washington State Department of Transportation (WSDOT)
 description: Instructions on how to integrate WSDOT data into your home.
-logo: wsdot.png
 ha_category:
   - Transport
 ha_iot_class: Cloud Polling
@@ -88,5 +87,5 @@ WSDOT does provide information about ferry schedules, mountain passes, tolls, et
 Here's an example of the sensor in use:
 
 <p class='img'>
-  <img src='{{site_root}}/images/screenshots/wsdot_sensor.png' />
+  <img src='/images/screenshots/wsdot_sensor.png' />
 </p>

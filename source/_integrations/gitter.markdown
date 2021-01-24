@@ -1,9 +1,9 @@
 ---
 title: Gitter
 description: Instructions on how to integrate a Gitter room sensor with Home Assistant
-logo: gitter.png
 ha_category:
   - Sensor
+ha_iot_class: Cloud Polling
 ha_release: 0.47
 ha_codeowners:
   - '@fabaff'

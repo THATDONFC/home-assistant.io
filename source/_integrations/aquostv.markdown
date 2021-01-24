@@ -1,7 +1,6 @@
 ---
 title: Sharp Aquos TV
 description: Instructions on how to integrate a Sharp Aquos TV into Home Assistant.
-logo: sharp_aquos.png
 ha_category:
   - Media Player
 ha_release: 0.35
@@ -74,5 +73,6 @@ Currently known supported models:
 - LC-60EQ10U
 - LC-60SQ15U
 - LC-50US40 (no volume control, not fully tested)
+- LC-70LE650U
 
 If your model is not on the list then give it a test, if everything works correctly then add it to the list on [GitHub](https://github.com/home-assistant/home-assistant.io/blob/current/source/_integrations/aquostv.markdown).

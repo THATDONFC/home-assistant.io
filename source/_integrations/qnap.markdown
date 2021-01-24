@@ -1,7 +1,6 @@
 ---
 title: QNAP
 description: Instructions on how to integrate the QNAP sensor within Home Assistant.
-logo: qnap.png
 ha_category:
   - System Monitor
 ha_release: 0.38
@@ -65,10 +64,10 @@ password:
   description: The password of the user to connect to the QNAP NAS.
   required: true
   type: string
-drivers:
+drives:
   description: "Array of drives to monitor (ex: `0:1`)."
   required: false
-  default: all drivers
+  default: all drives
   type: list
 volumes:
   description: "Array of volumes to monitor (ex: `DataVol1`)."
@@ -125,6 +124,7 @@ If your QNAP device uses self-signed certificates, set the `verify_ssl` option t
 
 This integration has been tested on the following devices:
 
+- TS-231P2 (QTS 4.4.2)
 - TS-259 Pro+ (QTS 4.2.6)
 - TS-410 (QTS 4.2.3)
 - TS-419 (QTS 4.2.3)

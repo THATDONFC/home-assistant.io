@@ -1,9 +1,9 @@
 ---
 title: Synology SRM
 description: Instructions on how to integrate Synology SRM routers into Home Assistant.
-logo: synology.png
 ha_category:
   - Presence Detection
+ha_iot_class: Local Polling
 ha_release: 0.87
 ha_codeowners:
   - '@aerialls'

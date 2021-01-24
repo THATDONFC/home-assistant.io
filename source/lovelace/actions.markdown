@@ -7,9 +7,10 @@ Some Lovelace cards have support for tap actions. These actions define what will
 
 Actions can be enabled on:
 
-- [Entity](/lovelace/entities/)
-- [Entity Button](/lovelace/entity-button/)
+- [Button](/lovelace/button/)
+- [Entities](/lovelace/entities/)
 - [Glance](/lovelace/glance/)
+- [Light](/lovelace/light/)
 - [Picture](/lovelace/picture/)
 - [Picture Element](/lovelace/picture-elements/)
 - [Picture Entity](/lovelace/picture-entity/)
@@ -161,8 +162,15 @@ double_tap_action:
 If you define confirmation as an object instead of boolean, you can add more customization and configurations.
 
 ```yaml
+double_tap_action:
+  action: call-service
+  confirmation:
+    text: Are you sure you want to restart?
+  service: script.restart
 hold_action:
-  action: toggle
+  action: call-service
+  confirmation: true
+  service: script.do_other_thing
 ```
 
 {% configuration confirmation%}
@@ -181,9 +189,20 @@ exemptions:
 {% configuration exemptions %}
 user:
   required: true
-  description: User id that can see the view tab.
+  description: User id that can see the view tab. For each user´s id listed, the confirmation dialog will NOT be shown.
   type: string
 {% endconfiguration %}
+
+```yaml
+double_tap_action:
+  action: call-service
+  confirmation:
+    text: Are you sure you want to restart?
+    exemptions:
+      - user: x9405b8c64ee49bb88c42000e0a9dfa8
+      - user: 88bcfbdc39155d16c3b2d09cbf8b0367
+  service: script.restart
+```
 
 ## Examples
 

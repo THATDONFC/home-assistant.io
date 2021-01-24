@@ -1,7 +1,8 @@
 ---
-title: Griddy
-description: Instructions on how to integrate griddy prices into Home Assistant.
+title: Griddy Power
+description: Instructions on how to integrate griddy real-time electricity prices into Home Assistant.
 ha_category:
+  - Energy
   - Sensor
 ha_release: 0.107
 ha_iot_class: Cloud Polling

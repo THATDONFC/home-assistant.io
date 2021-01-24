@@ -1,5 +1,5 @@
 ---
-title: Vizio SmartCast
+title: VIZIO SmartCast
 description: Instructions on how to integrate Vizio SmartCast TVs and sound bars into Home Assistant.
 ha_category:
   - Media Player
@@ -9,7 +9,6 @@ ha_config_flow: true
 ha_quality_scale: platinum
 ha_codeowners:
   - '@raman325'
-ha_quality_scale: platinum
 ha_domain: vizio
 ---
 
@@ -42,11 +41,11 @@ Write down its IP address and port number. If you have trouble finding a device 
 
 ## Pairing
 
-This integration requires an access token in order to communicate with TVs (speakers do not need an access token). An access token can be obtained by going through a pairing process, either manually, or through the HA frontend.
+This integration requires an access token in order to communicate with TVs (speakers do not need an access token). An access token can be obtained by going through a pairing process, either manually, or through the Home Assistant frontend.
 
-### Pair using the HA frontend
+### Pair using the Home Assistant frontend
 
- - **Using `configuration.yaml`:** If you have a `vizio` entry in `configuration.yaml` but don't provide an access token value in your configuration, after you initialize HomeAssistant, you will see a Vizio SmartCast device ready to be configured. When you open the configuration window, you will be guided through the pairing process. While HA will store the access token for the life of your `vizio` entity, it is a good idea to note the access token value displayed in the window and add it to your `configuration.yaml`. This will ensure that you will not have to go through the pairing process again in the future if you decide to rebuild your HA instance.
+ - **Using `configuration.yaml`:** If you have a `vizio` entry in `configuration.yaml` but don't provide an access token value in your configuration, after you initialize Home Assistant, you will see a Vizio SmartCast device ready to be configured. When you open the configuration window, you will be guided through the pairing process. While Home Assistant will store the access token for the life of your `vizio` entity, it is a good idea to note the access token value displayed in the window and add it to your `configuration.yaml`. This will ensure that you will not have to go through the pairing process again in the future if you decide to rebuild your Home Assistant instance.
 - **Using discovery or manual setup through the Integrations menu:** To initiate the pairing process, submit your initial configuration with an empty Access Token value.
 
 ### Pair manually using the CLI
@@ -121,7 +120,7 @@ name:
   type: string
   default: Vizio SmartCast
 access_token:
-  description: Authentication token you received in the last step of the pairing process. This token is only needed if your device is a TV, and you can opt not to provide it in your configuration and instead go through the pairing process via the HA frontend.
+  description: Authentication token you received in the last step of the pairing process. This token is only needed if your device is a TV, and you can opt not to provide it in your configuration and instead go through the pairing process via the Home Assistant frontend.
   required: false
   type: string
 device_class:
@@ -176,22 +175,50 @@ apps:
               default: null
 {% endconfiguration %}
 
-### Obtaining an app configuration
-
-If there is an app you want to be able to launch from Home Assistant that isn't detected by default, you will need to specify the app configuration in `configuration.yaml`. In order to determine the values to specify for each configuration parameter, launch the app you want to configure on your device, and run the following command (requires `pyvizio` to be installed locally):
-
-```bash
-pyvizio --ip={IP:PORT} get-current-app-config
+```yaml
+# Complete configuration.yaml entry
+vizio:
+  - host: "DEVICE_IP:DEVICE_PORT"
+    access_token: AUTH_TOKEN
+    name: MY_VIZIO_DEVICE
+    device_class: tv
+    volume_step: 1
+    apps:
+      include:
+        - APP_1
+        - APP_2
+      exclude:
+        - APP_1
+        - APP_2
+      additional_configs:
+        - name: MY_CUSTOM_APP
+          config:
+            APP_ID: 9
+            NAME_SPACE: 9
+            MESSAGE: MY_MESSAGE
 ```
 
-`pyvizio` will return the value of the three parameters (`APP_ID`, `NAME_SPACE`, `MESSAGE`) for the currently running app which you can then include in your configuration.
+### Obtaining an app configuration
+
+If there is an app you want to be able to launch from Home Assistant that isn't detected by default, you will need to specify the app configuration in `configuration.yaml`. This configuration can be obtained from the `app_id` state attribute when an unknown app is running on your device.
 
 ### Obtaining a list of valid apps to include or exclude
-To get the list of apps that can be excluded or included, run the following command (requires `pyvizio` to be installed locally):
+The list of apps that are provided by default is statically defined [here](https://github.com/vkorn/pyvizio/blob/master/pyvizio/const.py#L23). If you'd prefer a more concise list, you can either view the source list of a Vizio Smart TV in the Home Assistant frontend, or run the following command (requires `pyvizio` to be installed locally):
 
 ```bash
 pyvizio --ip=0 get-apps-list
 ```
+
+## Service `vizio.update_setting`
+
+This service allows you to update a setting on a given Vizio device. You will need to know the type of setting and the name of the setting to call this service. You can determine this by using the SmartCast app and going to device settings for your target device. The setting type is the lowercase version of the first menu item you'd select (e.g., display, audio, system), and the setting name is what you see in the app, but spaces are replaced with underscores and it is also all lowercase (e.g., AV delay would be called `av_delay`).
+
+| Service data attribute | Optional | Description | Example |
+| ---------------------- | -------- | ----------- | ------- |
+| `entity_id` | yes | The devices to update a setting for. | `media_player.vizio_smartcast`
+| `setting_type` | no | The type of setting. | `audio`
+| `setting_name` | no | The name of the setting. | `eq`
+| `new_value` | no | The new value to set the setting to. | `Music`
 
 ## Notes and limitations
 

@@ -1,12 +1,13 @@
 ---
 title: Emoncms
 description: Instructions on how to integrate Emoncms feeds as sensors into Home Assistant.
-logo: emoncms.png
 ha_category:
   - Sensor
 ha_release: 0.29
 ha_iot_class: Local Polling
 ha_domain: emoncms
+ha_codeowners:
+  - '@borpin'
 ---
 
 The `emoncms` sensor platform creates sensors for the feeds available in your local or cloud based version of [Emoncms](https://emoncms.org).

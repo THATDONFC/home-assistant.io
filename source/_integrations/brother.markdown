@@ -1,7 +1,6 @@
 ---
 title: Brother Printer
 description: Instructions on how to integrate a Brother printer into Home Assistant.
-logo: brother.png
 ha_category:
   - System Monitor
 ha_release: 0.104
@@ -10,6 +9,7 @@ ha_config_flow: true
 ha_codeowners:
   - '@bieniu'
 ha_domain: brother
+ha_quality_scale: platinum
 ---
 
 The `Brother Printer` integration allows you to read current data from your local Brother printer.
@@ -26,3 +26,10 @@ To add `Brother Printer` to your installation, go to **Configuration** >> **Inte
 Some very old Brother printers use different data format and these models are not supported. The integration will show information about that during configuration.
 
 </div>
+
+## Configuring the printer
+
+To set SNMP, navigate to the printer's web interface (for example: `http://192.168.5.6`) and turn it on under Network / Protocol / SNMP.
+For some Brother devices, `SNMPv3 read-write access and v1/v2c read-only access` is the option required (under advanced settings).
+
+![SNMP settings on Brother Printer web interface](/images/integrations/brother/brother-printer-webui.png)

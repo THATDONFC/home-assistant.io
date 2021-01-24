@@ -1,16 +1,23 @@
 ---
-title: "iammeter"
-description: "Instructions on how to integrate IAMMETER sensor within Home Assistant."
-logo: iammeter-logo.png
+title: IamMeter
+description: Instructions on how to integrate IAMMETER sensor within Home Assistant.
 ha_category:
   - Energy
   - Sensor
 ha_release: 0.107
 ha_iot_class: Local Polling
 ha_domain: iammeter
+ha_codeowners:
+  - '@lewei50'
 ---
 
 `iammeter` provides real-time readings of single-phase (WEM3080, WEM3162) and three-phase (WEM3080T) meters from [IAMMETER](https://www.iammeter.com) over Wi-Fi.
+
+Example Lovelace Dashboard:
+
+<p class='img'>
+  <img src='/images/integrations/iammeter/demo.jpg' />
+</p>
 
 ## Configuration
 

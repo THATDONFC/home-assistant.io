@@ -1,7 +1,6 @@
 ---
 title: Dublin Bus
 description: Instructions on how to integrate timetable data for traveling on Dublin Bus within Home Assistant.
-logo: dublin_bus.png
 ha_category:
   - Transport
 ha_iot_class: Cloud Polling
@@ -40,4 +39,4 @@ name:
   type: string
 {% endconfiguration %}
 
-The public RTPI information is coming from [Dub Linked](https://data.dublinked.ie/).
+The public RTPI information is coming from [Dub Linked](https://data.smartdublin.ie/).

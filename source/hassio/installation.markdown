@@ -1,45 +1,40 @@
 ---
-title: "Installing Home Assistant"
-description: "Instructions on how to install Home Assistant."
+title: "Installing Home Assistant OS"
+description: "Instructions on how to install Home Assistant OS."
 ---
 
-The following will take you through the steps required to install Home Assistant.
+The following will take you through the steps required to install Home Assistant OS.
 
 1. Download the appropriate install option:
 
    - As an image for your device:
 
-     - [Raspberry Pi 3 Model B and B+ 32bit][pi3-32] (recommended)
-     - [Raspberry Pi 3 Model B and B+ 64bit][pi3-64]
-     - [Raspberry Pi 4 Model B 32bit][pi4-32] (recommended)
-     - [Raspberry Pi 4 Model B 64bit][pi4-64]
+     - [Raspberry Pi 3 Model B and B+ 32-bit][pi3-32] (32-bit is required for GPIO support)
+     - [Raspberry Pi 3 Model B and B+ 64-bit][pi3-64]
+     - [Raspberry Pi 4 Model B (1 GB, 2 GB and 4 GB model) 32-bit][pi4-32] (32-bit is required for GPIO support)
+     - [Raspberry Pi 4 Model B (1 GB, 2 GB, 4 GB and 8 GB model) 64-bit][pi4-64] (64-bit is required for 8 GB model)
      - [Tinkerboard][tinker]
-     - [Odroid-C2][odroid-c2]
-     - [Odroid-N2 (Beta)][odroid-n2]
-     - [Odroid-XU4][odroid-xu4]
-     - [Intel-Nuc][intel-nuc]
+     - [Odroid-C2][odroid-c2], [Odroid-C4][odroid-c4], [Odroid-N2][odroid-n2], [Odroid-XU4][odroid-xu4]
+       - [Guide: Flashing Odroid-N2 using OTG-USB][otg-usb]
+     - [Intel NUC][intel-nuc]
 
-   - As a virtual appliance:
+   - As a virtual appliance (x86_64/UEFI):
   
-     - [VMDK][vmdk] (VMWare Workstation)
-     - [VHDX][vhdx]
-     - [VDI][vdi]
-     - [OVA][Virtual Appliance] (not available at this time!)
+     - [VMDK][vmdk], [VHDX][vhdx], [VDI][vdi], [QCOW2][qcow2], [OVA][Virtual Appliance]
 
-   - Not recommended Hardware:
+2. Install Home Assistant OS:
 
-     - [Raspberry Pi][pi1]
-     - [Raspberry Pi Zero-W][pi0-w]
-     - [Raspberry Pi 2][pi2]
+   - **For the device images:** Flash the downloaded image to an SD card using [balenaEtcher][balenaEtcher]. If using a Pi, we recommend at least a 32 GB SD card to avoid running out of space.
+   - **For the virtual appliance images:** Load the appliance image into your virtual machine software. (Note: You are free to assign as much resources as you wish to the VM, please assign enough based on your add-on needs)
+     - For VirtualBox create a new virtual machine, select "Other Linux (64Bit), assign it at least 2 GB of memory and "Use an existing virtual hard disk file", select the VDI file from above, afterwards edit the "Settings" of the VM and go "System" then Motherboard and Enable EFI, then "Network" "Adapter 1" Bridged and your adapter.
+     - For Hyper-V create a new virtual machine, select "Generation 2", assign it at least 2 GB of memory and select "Connection -> "Your Virtual Switch that is bridged", then "Use an existing virtual hard disk" and select the VHDX file from above, after creation go to "Settings" -> "Security" and deselect "Enable Secure Boot".
+     - For KVM create a new virtual machine in `virt-manager`, select "Import existing disk image", provide the path to the QCOW2 image above, choose "Generic Default" for the operating system, assign at least 2 GB memory and 1 vCPU, check the box for "Customize configuration before install" and select your bridge under "Network Selection", then under customization select "Overview" -> "Firmware" -> "UEFI x86_64: ...".
+     - For Vmware Workstation create a new virtual machine, select "Custom", make it compatible with the default of Workstation and ESX, Choose "I will install the operating system later", select "Linux" -> "Other Linux 5.x or later kernel 64-bit", give it at least 2 GB RAM and 1vCPU, select "Use Bridged Networking" then "Use an existing virtual disk" and select the VMDK file above, after creation of VM go to "Settings" and "Options" then "Advanced" and select "Firmware type" to "UEFI".
+     - For VMware ESXi/vSphere installation use the "E1001" or "E1001E" virtual network adapater. There are confirmed mDNS/Multicast discovery issues when using VMware's "VMXnet3" virtual network adapter.  
 
-2. Install Home Assistant:
-
-   - Flash the downloaded image to an SD card using [balenaEtcher][balenaEtcher]. If using a Pi, we recommend at least a 32 GB SD card to avoid running out of space. On Virtual machine platforms, provide at least 32 GB of disk space for the VM.
-   - Load the appliance image into your virtual machine software. Choose 64-bit Linux and UEFI boot.
-
-3. Optional - set up the Wi-Fi or static IP. There are two possible places for that:
+3. Optional - set up the Wi-Fi or a static IP address. There are two possible places for that:
    - on a blank USB stick with a FAT32 partition having partition label `CONFIG`, while in its root directory, create the `network/my-network` file, or
-   - on the Home Assistant SD card's first, bootable partition (labeled `hassio-boot`, might not be auto mounted in Linux) create the `CONFIG/network/my-network` file.
+   - on the Home Assistant SD card's first, bootable partition (labeled `hassos-boot`, might not be auto mounted in Linux) create the `CONFIG/network/my-network` file.
 
    For the content of this file, follow the [Home Assistant Operating System howto][hassos-network].
 
@@ -51,7 +46,7 @@ The following will take you through the steps required to install Home Assistant
 
 6. You will be able to reach your installation at `http://homeassistant.local:8123` (if your router supports mDNS, otherwise see below).
 
-7. It is important to provide yourself proper access, including the Home Assistant CLI tools. Both the [Samba add-on][samba] and the [SSH add-on][ssh] should be the first add-ons you should install, before making changes to the configuration in the `/config/` folder. From the UI choose **Supervisor**, which is located in the sidebar and then the add-on store.
+7. From here, you have two options - either configure your Home Assistant from scratch, or restore a saved snapshot with all its settings and add-ons that you saved in the past.
 
 <div class='note warning'>
 
@@ -83,157 +78,51 @@ Best practice for updating a Home Assistant installation:
 4. If the check passes, you can safely update. If not, update your configuration accordingly.
 5. Select _Dashboard_ from the _Supervisor_ menu, and then select _Update_.
 
-## Run a specific version on Home Assistant
+## Run a specific version of Home Assistant
 
-SSH to your Home Assistant system, or connect to the console, and run:
+For this you would need to install the [Terminal & SSH add-on][ssh] or use the console
+that is available on your device by connecting a keyboard and screen.
+
+To install the Terminal & SSH add-on, choose **Supervisor**, which is located in the sidebar and then the add-on store.
+
+Use the web-based terminal or SSH to your Home Assistant system, or connect to the console, and run:
 
 ```bash
-ha core update --version=0.XX.X
+ha core update --version=X.Y.Z
 ```
 
-## Run the beta version on Home Assistant
+Replacing `X.Y.Z` with your desired version (i.e., `2020.12.0` or `0.118.5`).
 
-If you would like to test next release before anyone else, you can install the beta version released every three weeks:
+## Run the beta version of Home Assistant
+
+If you would like to test next release before anyone else, you can install the beta version released every month:
 
 1. Backup your installation, using the snapshot functionality Home Assistant offers.
 2. Check the [Home Assistant Beta release notes](https://rc.home-assistant.io/latest-release-notes/) for breaking changes. Be sure to check all release notes between the version you are running and the one you are upgrading to. Use the search function in your browser (`CTRL + f`) and search for **Breaking Changes**.
 3. Select _System_ tab from the _Supervisor_ menu, then select _Join Beta Channel_ under _Supervisor_, then select _Reload_.
 4. Select _Dashboard_ tab from the _Supervisor_ menu, and then select _Update_.
 
-## Alternative: install Home Assistant Supervised on a generic Linux host
-
-You can also install Home Assistant on a Linux operating system of choice, called Home Assistant Supervised.
-
-Home Assistant Supervised, will still give you access to most features Home Assistant has to offer, including add-ons.
-
-The packages you need to have available on your system needed to Home Assistant may vary.
-
-### Debian/Ubuntu
-
-- `apparmor-utils`
-- `apt-transport-https`
-- `avahi-daemon`
-- `ca-certificates`
-- `curl`
-- `dbus`
-- `jq`
-- `socat`
-- `software-properties-common`
-
-Optional:
-
-- `network-manager`
-
-<div class='note warning'>
-
-   Without the NetworkManager, you will be not able to control your host network setup over the UI. The `modemmanager` package will interfere with any Z-Wave or Zigbee stick and should be removed or disabled. Failure to do so will result in random failures of those integrations. For example, you can disable with `sudo systemctl disable ModemManager` and remove with `sudo apt-get purge modemmanager`
-
-</div>
-
-### Arch Linux
-
-- `apparmor`
-- `avahi`
-- `ca-certificates`
-- `curl`
-- `dbus`
-- `docker`
-- `jq`
-- `socat`
-
-You also need to have Docker-CE installed. There are well-documented procedures for installing Docker on Ubuntu at [Docker.com](https://docs.docker.com/install/linux/docker-ce/ubuntu/), you can find installation steps for your Linux distribution in the menu on the left.
-
-<div class='note warning'>
-
-  Some distributions, like Ubuntu, have a `docker.io` package available. Using that package will cause issues!
-  Be sure to install the official Docker-CE from the above-listed URL.
-  
-  Docker is not always ready with a release when a new Ubuntu version is out. Check if your version of Ubuntu is supported by Docker [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
-
-</div>
-
-### Preparation
-
-To prepare your machine for the Home Assistant installation, run the following commands:
-
-For Ubuntu:
-
-```bash
-add-apt-repository universe
-```
-
-Debian/Ubuntu:
-
-```bash
-sudo -i
-apt-get update
-apt-get install -y software-properties-common apparmor-utils apt-transport-https avahi-daemon ca-certificates curl dbus jq network-manager socat
-systemctl disable ModemManager
-curl -fsSL get.docker.com | sh
-```
-
-The following script will then install Home Assistant on a variety of operating systems and machine types.
-
-```bash
-curl -sL "https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh" | bash -s
-```
-
-Some installation types require flags to identify the computer type, for example, when using a Raspberry Pi 3, the flag `-- -m raspberrypi3` is required. The install script would then look like this:
-
-```bash
-curl -sL "https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh" | bash -s -- -m raspberrypi3
-```
-
-#### Other machine types
-
-- `intel-nuc`
-- `raspberrypi`
-- `raspberrypi2`
-- `raspberrypi3`
-- `raspberrypi3-64`
-- `raspberrypi4`
-- `raspberrypi4-64`
-- `odroid-c2`
-- `odroid-cu2`
-- `odroid-xu`
-- `tinker`
-- `qemuarm`
-- `qemuarm-64`
-- `qemux86`
-- `qemux86-64`
-
-See the [hassio-installer](https://github.com/home-assistant/hassio-installer) GitHub page for an up-to-date listing of supported machine types.
-
-If you can not find your machine type in the list, you should pick the `qemu` release. i.e., `qemux86-64` for a normal 64-bit Linux distribution, or `qemuarm-64` for most modern ARM-based target like Raspberry Pi clones, or TV boxes.
-
-<div class='note'>
-When you use this installation method, the core SSH add-on may not function correctly. If that happens, use the community SSH add-on. Some of the documentation might not work for your installation either.
-</div>
-
-A detailed guide about running Home Assistant as a virtual machine is available in the [blog][hassio-vm].
 
 [balenaEtcher]: https://www.balena.io/etcher
-[Virtual Appliance]: https://github.com/home-assistant/operating-system/blob/dev/Documentation/boards/ova.md
 [hassos-network]: https://github.com/home-assistant/operating-system/blob/dev/Documentation/network.md
-[pi0-w]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi0-w-3.12.img.gz
-[pi1]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi-3.12.img.gz
-[pi2]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi2-3.12.img.gz
-[pi3-32]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi3-3.12.img.gz
-[pi3-64]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi3-64-3.12.img.gz
-[pi4-32]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi4-3.12.img.gz
-[pi4-64]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_rpi4-64-3.12.img.gz
-[tinker]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_tinker-3.12.img.gz
-[odroid-c2]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_odroid-c2-3.12.img.gz
-[odroid-n2]: https://github.com/home-assistant/operating-system/releases/download/4.4/hassos_odroid-n2-4.4.img.gz
-[odroid-xu4]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_odroid-xu4-3.12.img.gz
-[intel-nuc]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_intel-nuc-3.12.img.gz
-[vmdk]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_ova-3.12.vmdk.gz
-[vhdx]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_ova-3.12.vhdx.gz
-[vdi]: https://github.com/home-assistant/operating-system/releases/download/3.12/hassos_ova-3.12.vdi.gz
-[linux]: https://github.com/home-assistant/hassio-installer
+[pi3-32]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_rpi3-5.9.img.xz
+[pi3-64]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_rpi3-64-5.9.img.xz
+[pi4-32]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_rpi4-5.9.img.xz
+[pi4-64]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_rpi4-64-5.9.img.xz
+[tinker]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_tinker-5.9.img.xz
+[odroid-c2]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_odroid-c2-5.9.img.xz
+[odroid-c4]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_odroid-c4-5.9.img.xz
+[odroid-n2]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_odroid-n2-5.9.img.xz
+[odroid-xu4]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_odroid-xu4-5.9.img.xz
+[intel-nuc]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_intel-nuc-5.9.img.xz
+[vmdk]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_ova-5.9.vmdk.xz
+[vhdx]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_ova-5.9.vhdx.xz
+[vdi]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_ova-5.9.vdi.xz
+[qcow2]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_ova-5.9.qcow2.xz
+[Virtual Appliance]: https://github.com/home-assistant/operating-system/releases/download/5.9/hassos_ova-5.9.ova
 [local]: http://homeassistant.local:8123
 [samba]: /addons/samba/
 [ssh]: /addons/ssh/
 [pi-power]: https://www.raspberrypi.org/help/faqs/#powerReqs
-[hassio-vm]: /blog/2017/11/29/hassio-virtual-machine/
 [configure]: /getting-started/configuration/
+[otg-usb]: /hassio/flashing_n2_otg/

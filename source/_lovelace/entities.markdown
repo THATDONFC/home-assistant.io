@@ -6,6 +6,8 @@ description: "The Entities card is the most common type of card. It groups items
 
 The Entities card is the most common type of card. It groups items together into lists.
 
+To add the Entities card to your user interface, click the Lovelace menu (three dots at the top right of the screen) and then **Edit Dashboard**. Click the plus button in the bottom right corner and select **Entities** from the card picker.
+
 {% configuration %}
 type:
   required: true
@@ -74,7 +76,7 @@ image:
   type: string
 secondary_info:
   required: false
-  description: "Show additional info. Values: `entity-id`, `last-changed`, `last-triggered` (only for automations and scripts)."
+  description: "Show additional info. Values: `entity-id`, `last-changed`, `last-updated`, `last-triggered` (only for automations and scripts), `position` or `tilt-position` (only for supported covers), `brightness` (only for lights)."
   type: string
 format:
   required: false
@@ -113,34 +115,42 @@ double_tap_action:
 
 ## Special Row Elements
 
-### Call Service
+### Button
 
 {% configuration %}
 type:
   required: true
-  description: call-service
+  description: button
+  type: string
+entity:
+  required: false
+  description: "Entity ID. Either `entity` or `name` (or both) needs to be provided."
   type: string
 name:
-  required: true
-  description: Main Label.
+  required: false
+  description: "Row label. Either `entity` or `name` (or both) needs to be provided."
   type: string
-service:
-  required: true
-  description: "Service like `media_player.media_play_pause`"
-  type: string
+  default: "Friendly name of `entity` if specified."
 icon:
   required: false
-  description: "Icon to display (e.g., `mdi:home`)"
+  description: An icon to display to the left of the label.
   type: string
-  default: "`mdi:remote`"
 action_name:
   required: false
   description: Button label.
   type: string
   default: "`Run`"
-service_data:
+tap_action:
+  required: true
+  description: Action taken on card tap. See [action documentation](/lovelace/actions/#tap-action).
+  type: map
+hold_action:
   required: false
-  description: The service data to use.
+  description: Action taken on card tap and hold. See [action documentation](/lovelace/actions/#hold-action).
+  type: map
+double_tap_action:
+  required: false
+  description: Action taken on card double tap. See [action documentation](/lovelace/actions/#double-tap-action).
   type: map
 {% endconfiguration %}
 
@@ -152,6 +162,10 @@ Special row to start Home Assistant Cast.
 type:
   required: true
   description: cast
+  type: string
+dashboard:
+  required: false
+  description: Path to the dashboard of the view that needs to be shown.
   type: string
 view:
   required: true
@@ -220,8 +234,8 @@ type:
 style:
   required: false
   description: Style the element using CSS.
-  type: string
-  default: "height: 1px, background-color: var(--secondary-text-color)"
+  type: map
+  default: "height: 1px, background-color: var(--divider-color)"
 {% endconfiguration %}
 
 ### Section
@@ -258,6 +272,69 @@ icon:
   description: "Icon to display (e.g., `mdi:home`)"
   type: string
   default: "`mdi:link`"
+{% endconfiguration %}
+
+### Buttons
+
+{% configuration %}
+type:
+  required: true
+  description: buttons
+  type: string
+entities:
+  required: true
+  description: A list of entities to show. Each entry is either an entity ID or a map.
+  type: list
+  keys:
+    entity:
+      required: true
+      description: The entity to render.
+      type: string
+    icon:
+      required: false
+      description: Override the entity icon.
+      type: string
+    image:
+      required: false
+      description: Override the entity image.
+      type: string
+    name:
+      required: false
+      description: Label for the button
+      type: string
+{% endconfiguration %}
+
+### Attribute
+
+{% configuration %}
+type:
+  required: true
+  description: attribute
+  type: string
+entity:
+  required: true
+  description: Home Assistant entity ID.
+  type: string
+attribute:
+  required: true
+  description: Attribute to display from the entity.
+  type: string
+prefix:
+  required: false
+  description: Text before entity state.
+  type: string
+suffix:
+  required: false
+  description: Text after entity state.
+  type: string
+name:
+  required: false
+  description: Overwrites friendly name.
+  type: string
+format:
+  required: false
+  description: "How the attribute value should be formatted. Currently only supported for timestamp attributes. Valid values are: `relative`, `total`, `date`, `time` and `datetime`."
+  type: string  
 {% endconfiguration %}
 
 ## Example
@@ -299,8 +376,12 @@ entities:
     name: Home Assistant
     url: https://www.home-assistant.io/
     icon: mdi:home-assistant
+  - type: button
+    name: Power cycle LibreELEC
+    icon: mdi:power-cycle
+    tap_action:
+      action: call-service
+      confirmation:
+        text: Are you sure you want to restart?
+      service: script.libreelec_power_cycle
 ```
-
-<div class='note'>
-Please be aware that the entity types divider and weblink aren't yet supported by the UI editor and a warning about `Expected a value of type...` is shown. You can ignore the warning and save your edits to verify.
-</div>

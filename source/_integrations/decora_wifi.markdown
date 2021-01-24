@@ -4,7 +4,6 @@ description: Instructions on how to setup Leviton Decora Smart Wi-Fi switches/di
 ha_category:
   - Light
 ha_iot_class: Cloud Polling
-logo: leviton.png
 ha_release: 0.51
 ha_domain: decora_wifi
 ---
@@ -15,6 +14,7 @@ Supported devices (tested):
 
 - [DW6HD1-BZ](https://www.leviton.com/en/products/dw6hd-1bz) (Decora Smart Wi-Fi 600W Dimmer)
 - [DW15S-1BZ](https://www.leviton.com/en/products/dw15s-1bz) (Decora Smart Wi-Fi 15A Switch)
+- [DW15P-1BW](https://www.leviton.com/en/products/dw15p-1bw) (Decora Smart Wi-Fi Plug-in Outlet)
 
 To enable these lights, add the following lines to your `configuration.yaml` file:
 

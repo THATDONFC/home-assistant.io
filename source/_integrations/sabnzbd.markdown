@@ -1,7 +1,6 @@
 ---
 title: SABnzbd
 description: Instructions on how to integrate SABnzbd with Home Assistant.
-logo: sabnzbd.png
 ha_category:
   - Downloading
   - Sensor
@@ -15,7 +14,7 @@ The `sabnzbd` integration will allow you to monitor and control your downloads w
 If SABnzbd is discovered on your network, you can enter your API Key in the Configurator. Press "CONFIGURE" to do it.
 
 <p class='img'>
-  <img src='{{site_root}}/images/screenshots/sabnzbd-configure.png' />
+  <img src='/images/screenshots/sabnzbd-configure.png' />
 </p>
 
 This will create services for interacting with SABnzbd in scripts and automations, but no sensors will be created.

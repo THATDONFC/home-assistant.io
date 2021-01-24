@@ -11,6 +11,8 @@ The Map card that allows you to display entities on a map
 Screenshot of the map card.
 </p>
 
+To add the Map card to your user interface, click the Lovelace menu (three dots at the top right of the screen) and then **Edit Dashboard**. Click the plus button in the bottom right corner and select **Map** from the card picker. All options for this card can be configured via the user interface.
+
 {% configuration %}
 type:
   required: true
@@ -42,6 +44,11 @@ dark_mode:
   description: Enable a dark theme for the map.
   type: boolean
   default: false
+hours_to_show:
+  required: false
+  description: Shows a path of previous locations. Hours to show as path on the map.
+  type: integer
+  default: 0
 {% endconfiguration %}
 
 <div class='note'>
@@ -58,6 +65,8 @@ dark_mode:
 
 ## Examples
 
+The card can also be configured using YAML, some examples below:
+
 ```yaml
 type: map
 aspect_ratio: 16:9
@@ -73,4 +82,11 @@ geo_location_sources:
   - nsw_rural_fire_service_feed
 entities:
   - zone.home
+```
+
+```yaml
+type: map
+entities:
+  - device_tracker.demo_paulus
+hours_to_show: 48
 ```

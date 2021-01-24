@@ -50,12 +50,25 @@ binary_sensor:
     method: POST
 ```
 
+or a template based request:
+
+```yaml
+# Example configuration.yaml entry
+sensor:
+  - platform: rest
+    resource_template: {% raw %} "http://IP_ADDRESS/{{ now().strftime('%Y-%m-%d') }}" {% endraw %}
+```
+
 {% configuration %}
 resource:
   description: The resource or endpoint that contains the value.
   required: true
   type: string
   default: string
+resource_template:
+  description: The resource or endpoint that contains the value with template support.
+  required: false
+  type: template
 method:
   description: The method of the request.
   required: false
@@ -107,10 +120,6 @@ headers:
   required: false
   type: [list, string]
 {% endconfiguration %}
-
-<div class='note warning'>
-Make sure that the URL exactly matches your endpoint or resource.
-</div>
 
 ## Examples
 

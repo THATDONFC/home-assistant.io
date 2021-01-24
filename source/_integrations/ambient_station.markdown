@@ -1,7 +1,6 @@
 ---
 title: Ambient Weather Station
 description: How to integrate Ambient Weather station within Home Assistant.
-logo: ambient_weather.png
 ha_category:
   - Weather
 ha_release: 0.85
@@ -43,3 +42,12 @@ app_key:
   required: true
   type: string
 {% endconfiguration %}
+
+## Local API Option
+
+This integration communicates with Ambient Weather PWS units via the Ambient Weather
+Cloud. Users wishing to explore a local option are encouraged to explore the
+[Ecowitt GW1000](https://www.ecowitt.com/shop/goodsDetail/16), a small device that is
+able to read RF signals directly from the PWS and transmit them to a variety of
+other applications, including [`ecowitt2mqtt`](https://github.com/bachya/ecowitt2mqtt)
+(which supports [MQTT Discovery](/docs/mqtt/discovery)).

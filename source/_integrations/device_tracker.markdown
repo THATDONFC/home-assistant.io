@@ -4,6 +4,7 @@ description: Instructions on how to setup device tracking within Home Assistant.
 ha_category:
   - Presence Detection
 ha_release: 0.7
+ha_iot_class:
 ha_quality_scale: internal
 ha_domain: device_tracker
 ---
@@ -62,7 +63,7 @@ Multiple device trackers can be used in parallel, such as [Owntracks](/integrati
 
 <div class='note warning'>
 
-As of 0.94 `known_devices.yaml` is being phased out and no longer used by all trackers. Depending on the integration you use this section may no longer apply. This includes the mobile app, OwnTracks, GeoFency, GPSLogger, Locative and Huawei LTE.
+As of 0.94 `known_devices.yaml` is being phased out and no longer used by all trackers. Depending on the integration you use this section may no longer apply. This includes OwnTracks, GeoFency, GPSLogger, Locative and Huawei LTE.
 
 </div>
 

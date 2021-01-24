@@ -1,10 +1,10 @@
 ---
 title: Mycroft
 description: Instructions on how to setup Mycroft AI within Home Assistant.
-logo: mycroft.png
 ha_category:
   - Voice
   - Notifications
+ha_iot_class: Local Push
 ha_release: 0.53
 ha_domain: mycroft
 ---
@@ -30,4 +30,30 @@ host:
   description: The IP address of your Mycroft instance.
   required: true
   type: string
-{% endconfiguration %}
+{% endconfiguration %}  
+
+## Using notifications
+
+To use Mycroft for sending notifications, add the following to your `configuration.yaml` file:
+
+```yaml
+# Example configuration.yaml entry
+notify:
+  - platform: mycroft
+    name: mycroft
+```  
+
+{% configuration %}
+name:
+  description: Frendly name of your Mycroft instance.
+  required: true
+  type: string
+{% endconfiguration %}  
+
+## Examples
+
+Send a mesage to Mycroft by calling `notify.mycroft` service:
+
+```yaml
+message: "hey"
+```
